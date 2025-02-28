@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".aws\task-definition.json" />
+      <Content Include="aws\task-definition.json" />
     </ItemGroup>
 
 </Project>
