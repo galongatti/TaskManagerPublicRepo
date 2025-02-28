@@ -20,4 +20,8 @@
       <None Include=".github\workflows\aws.yml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include=".aws\task-definition.json" />
+    </ItemGroup>
+
 </Project>
