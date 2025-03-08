@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 using TaskManagerBackEnd.Config;
 
@@ -14,17 +13,17 @@ public class ConnectionDB : IDisposable
         _secretsManager = secretsManager;
     }
 
+    public void Dispose()
+    {
+        _sqlConn?.Close();
+        GC.SuppressFinalize(this);
+    }
+
     public NpgsqlConnection OpenConnection()
     {
         string? connectionString = _secretsManager.GetConnectionStringAsync().Result;
         _sqlConn = new NpgsqlConnection(connectionString);
         _sqlConn.Open();
         return _sqlConn;
-    }
-
-    public void Dispose()
-    {
-        _sqlConn?.Close();
-        GC.SuppressFinalize(this);
     }
 }

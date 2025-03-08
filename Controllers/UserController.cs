@@ -22,18 +22,12 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (user == null)
-            {
-                return BadRequest("Invalid member");
-            }
+            if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
             bool res = _memberService.AddMember(user);
-            
-            if (!res)
-            {
-                return BadRequest("Member not created");
-            }
-            
+
+            if (!res) return BadRequest("Member not created");
+
             return Ok(res);
         }
         catch (Exception e)
@@ -42,8 +36,27 @@ public class UserController : ControllerBase
             return BadRequest("Something went wrong");
         }
     }
-    
-    
+
+    [HttpPut("UpdateUser")]
+    public ActionResult<bool> UpdateUser([FromBody] UserUpdateDTO user)
+    {
+        try
+        {
+            if (ModelState.IsValid == false) return BadRequest("Invalid member");
+
+            bool res = _memberService.UpdateMember(user);
+
+            if (!res) return BadRequest("Member not updated");
+
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+
     [HttpGet("TestarComunicacao")]
     public ActionResult<string> TestarComunicacao()
     {

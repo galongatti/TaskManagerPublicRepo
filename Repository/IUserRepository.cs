@@ -1,12 +1,10 @@
-using TaskManagerBackEnd.DTO;
-
 namespace TaskManagerBackEnd.Repository;
 
 public interface IUserRepository
 {
-    public bool AddMember(UserInsertDTO user);
-    public bool UpdateMember(UserUpdateDTO user);
+    public bool AddMember(User user);
+    public bool UpdateMember(User user);
     public bool DeleteMember(string id);
-    public User GetMemberById(int id);
+    public User? GetMemberById(int id);
     public User GetMemberByEmail(string email);
 }

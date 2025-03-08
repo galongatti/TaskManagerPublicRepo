@@ -1,14 +1,13 @@
+using System.Text.Json;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 
 namespace TaskManagerBackEnd.Config;
 
 public class SecretsManager
 {
-    private readonly IAmazonSecretsManager _secretsManager;
     private readonly IConfiguration _configuration;
+    private readonly IAmazonSecretsManager _secretsManager;
 
     public SecretsManager(IAmazonSecretsManager secretsManager, IConfiguration configuration)
     {
@@ -18,28 +17,29 @@ public class SecretsManager
 
     public async Task<string> GetSecretValueAsync(string secretName)
     {
-        var request = new GetSecretValueRequest
+        GetSecretValueRequest request = new()
         {
             SecretId = secretName
         };
 
-        var response = await _secretsManager.GetSecretValueAsync(request);
+        GetSecretValueResponse? response = await _secretsManager.GetSecretValueAsync(request);
         return response.SecretString;
     }
 
-    public async Task<string> GetConnectionStringAsync()
+    public async Task<string?> GetConnectionStringAsync()
     {
-        string enviroment = _configuration["Environment"];
-        
-        if(enviroment == "Development")
+        string? enviroment = _configuration["Environment"];
+
+        if (enviroment == "Development")
         {
-            string connectionString = _configuration["TaskManager:ConnectionString"];
+            string? connectionString = _configuration["TaskManager:ConnectionString"];
             return connectionString;
         }
-        
-        var secretName = _configuration["Secrets:ConnectionString"];
-        var secretValue = await GetSecretValueAsync(secretName);
-        var secret = JsonSerializer.Deserialize<Dictionary<string, string>>(secretValue);
+
+        string? secretName = _configuration["Secrets:ConnectionString"] ??
+                             throw new ArgumentNullException("Connection String secret name not found");
+        string secretValue = await GetSecretValueAsync(secretName);
+        Dictionary<string, string>? secret = JsonSerializer.Deserialize<Dictionary<string, string>>(secretValue);
         return secret["ConnectionString"];
     }
 }
