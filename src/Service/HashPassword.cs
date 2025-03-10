@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TaskManagerBackEnd.Service;
+namespace src.TaskManagerBackEnd.Service;
 
 public class HashPassword
 {

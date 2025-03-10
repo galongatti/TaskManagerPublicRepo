@@ -1,9 +1,9 @@
-using TaskManagerBackEnd.Config;
-using TaskManagerBackEnd.Connection;
-using TaskManagerBackEnd.Repository;
-using TaskManagerBackEnd.Service;
+using src.TaskManagerBackEnd.Config;
+using src.TaskManagerBackEnd.Connection;
+using src.TaskManagerBackEnd.Repository;
+using src.TaskManagerBackEnd.Service;
 
-namespace TaskManagerBackEnd;
+namespace src.TaskManagerBackEnd;
 
 public static class DependencyInjectionConfig
 {

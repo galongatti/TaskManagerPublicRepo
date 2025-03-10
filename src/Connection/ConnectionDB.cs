@@ -1,7 +1,7 @@
 using Npgsql;
-using TaskManagerBackEnd.Config;
+using src.TaskManagerBackEnd.Config;
 
-namespace TaskManagerBackEnd.Connection;
+namespace src.TaskManagerBackEnd.Connection;
 
 public class ConnectionDB : IDisposable
 {

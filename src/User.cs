@@ -1,4 +1,4 @@
-namespace TaskManagerBackEnd;
+namespace src.TaskManagerBackEnd;
 
 /// <summary>
 ///     Represents a user in the Task Manager system.

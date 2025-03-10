@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using TaskManagerBackEnd.DTO;
-using TaskManagerBackEnd.Service;
+using src.TaskManagerBackEnd.DTO;
+using src.TaskManagerBackEnd.Service;
 
-namespace TaskManagerBackEnd.Controllers;
+namespace src.TaskManagerBackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -10,11 +10,13 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IMemberService _memberService;
+    private readonly IConfiguration _conf;
 
-    public UserController(ILogger<UserController> logger, IMemberService memberService)
+    public UserController(ILogger<UserController> logger, IMemberService memberService, IConfiguration conf)
     {
         _logger = logger;
         _memberService = memberService;
+        _conf = conf;
     }
 
     [HttpPost("CreateUser")]
@@ -60,6 +62,14 @@ public class UserController : ControllerBase
     [HttpGet("TestarComunicacao")]
     public ActionResult<string> TestarComunicacao()
     {
-        return Ok("Comunicação com o back-end estabelecida");
+        try
+        {
+            return Ok(_conf["Environment"]);
+        }
+        catch (Exception)
+        {
+
+            return BadRequest(_conf["Environment"]);
+        }
     }
 }

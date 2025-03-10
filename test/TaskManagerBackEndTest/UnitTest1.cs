@@ -1,4 +1,4 @@
-namespace TaskManagerBackEndTest
+namespace src.TaskManagerBackEndTest
 {
     public class UnitTest1
     {

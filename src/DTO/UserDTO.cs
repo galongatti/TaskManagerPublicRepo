@@ -1,4 +1,4 @@
-namespace TaskManagerBackEnd.DTO;
+namespace src.TaskManagerBackEnd.DTO;
 
 public class UserInsertDTO
 {
