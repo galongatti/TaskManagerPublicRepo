@@ -2,7 +2,7 @@ using System.Text.Json;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 
-namespace TaskManagerBackEnd.Config;
+namespace src.TaskManagerBackEnd.Config;
 
 public class SecretsManager
 {
@@ -28,9 +28,10 @@ public class SecretsManager
 
     public async Task<string?> GetConnectionStringAsync()
     {
-        string? enviroment = _configuration["Environment"];
+        string enviroment = _configuration["Environment"] ??
+                             throw new ArgumentNullException("Environmet variable not found");;
 
-        if (enviroment == "Development")
+        if (enviroment == "development")
         {
             string? connectionString = _configuration["TaskManager:ConnectionString"];
             return connectionString;

@@ -1,6 +1,6 @@
-using TaskManagerBackEnd.DTO;
+using src.TaskManagerBackEnd.DTO;
 
-namespace TaskManagerBackEnd.Service;
+namespace src.TaskManagerBackEnd.Service;
 
 public interface IMemberService
 {

@@ -1,8 +1,8 @@
 using Dapper;
 using Npgsql;
-using TaskManagerBackEnd.Connection;
+using src.TaskManagerBackEnd.Connection;
 
-namespace TaskManagerBackEnd.Repository;
+namespace src.TaskManagerBackEnd.Repository;
 
 public class UserRepository : IUserRepository
 {

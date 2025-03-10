@@ -1,4 +1,4 @@
-namespace TaskManagerBackEnd.Repository;
+namespace src.TaskManagerBackEnd.Repository;
 
 public interface IUserRepository
 {

@@ -1,7 +1,7 @@
-using TaskManagerBackEnd.DTO;
-using TaskManagerBackEnd.Repository;
+using src.TaskManagerBackEnd.DTO;
+using src.TaskManagerBackEnd.Repository;
 
-namespace TaskManagerBackEnd.Service;
+namespace src.TaskManagerBackEnd.Service;
 
 public class MemberService : IMemberService
 {
