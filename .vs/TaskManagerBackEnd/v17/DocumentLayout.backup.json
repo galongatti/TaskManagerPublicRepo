@@ -69,8 +69,7 @@
               "RelativeToolTip": "src\\TaskManagerBackEnd.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-03-10T23:51:09.816Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T23:51:09.816Z"
             },
             {
               "$type": "Document",
@@ -82,8 +81,7 @@
               "RelativeToolTip": "src\\Controllers\\UserController.cs",
               "ViewState": "AgIAAC4AAAAAAAAAAADgvz0AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T17:33:42.868Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T17:33:42.868Z"
             },
             {
               "$type": "Document",
@@ -95,8 +93,7 @@
               "RelativeToolTip": "src\\Dockerfile",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-03-10T17:31:47.929Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T17:31:47.929Z"
             },
             {
               "$type": "Document",
@@ -120,8 +117,7 @@
               "RelativeToolTip": "src\\Config\\SecretsManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T17:03:58.217Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T17:03:58.217Z"
             },
             {
               "$type": "Document",
@@ -145,8 +141,7 @@
               "RelativeToolTip": "src\\Program.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAiwB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T17:50:35.751Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T17:50:35.751Z"
             },
             {
               "$type": "Document",
@@ -171,8 +166,7 @@
               "RelativeToolTip": "..\\..\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\build\\Container.targets",
               "ViewState": "AgIAAL4AAAAAAAAAAAAgwOIAAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2025-03-10T23:44:09.36Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T23:44:09.36Z"
             },
             {
               "$type": "Document",
@@ -184,8 +178,7 @@
               "RelativeToolTip": "src\\appsettings.production.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-10T17:35:29.109Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T17:35:29.109Z"
             },
             {
               "$type": "Document",
@@ -197,8 +190,7 @@
               "RelativeToolTip": "src\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-10T17:35:23.112Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-10T17:35:23.112Z"
             },
             {
               "$type": "Document",
