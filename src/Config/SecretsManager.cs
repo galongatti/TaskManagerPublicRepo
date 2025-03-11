@@ -2,7 +2,7 @@ using System.Text.Json;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 
-namespace src.TaskManagerBackEnd.Config;
+namespace TaskManagerBackEnd.Config;
 
 public class SecretsManager
 {
@@ -15,7 +15,7 @@ public class SecretsManager
         _configuration = configuration;
     }
 
-    public async Task<string> GetSecretValueAsync(string secretName)
+    private async Task<string> GetSecretValueAsync(string secretName)
     {
         GetSecretValueRequest request = new()
         {

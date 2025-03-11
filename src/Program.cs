@@ -1,6 +1,6 @@
 using Amazon.SecretsManager;
 
-namespace src.TaskManagerBackEnd;
+namespace TaskManagerBackEnd;
 
 public class Program
 {

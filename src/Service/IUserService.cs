@@ -1,8 +1,9 @@
-using src.TaskManagerBackEnd.DTO;
+using src.TaskManagerBackEnd;
+using TaskManagerBackEnd.DTO;
 
-namespace src.TaskManagerBackEnd.Service;
+namespace TaskManagerBackEnd.Service;
 
-public interface IMemberService
+public interface IUserService
 {
     /// <summary>
     ///     Adds a new member to the repository.
@@ -13,8 +14,10 @@ public interface IMemberService
     /// </returns>
     public bool AddMember(UserInsertDTO user);
 
-    public bool UpdateMember(UserUpdateDTO user);
-    public bool DeleteMember(string id);
+    public bool UpdateMember(UserUpdateDto user);
+    public bool DeleteMember(int id);
     public User GetMemberById(int id);
     public User GetMemberByEmail(string email);
+    
+    public bool UpdatePassword(UserUpdatePasswordDto user);
 }

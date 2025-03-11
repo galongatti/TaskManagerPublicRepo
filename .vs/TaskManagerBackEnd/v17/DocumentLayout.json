@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -57,7 +57,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -99,20 +99,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Dockerfile",
               "RelativeDocumentMoniker": "src\\Dockerfile",
               "ToolTip": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Dockerfile",
               "RelativeToolTip": "src\\Dockerfile",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-03-10T17:31:47.929Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DependencyInjection.cs",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\DependencyInjection.cs",
               "RelativeDocumentMoniker": "src\\DependencyInjection.cs",

@@ -12,7 +12,8 @@ Content-Type: application/json
   "Password": "password123",
   "Name": "John Doe",
   "Post": "Developer",
-  "Enabled": true
+  "Enabled": true,
+  "IdTeam": 1
 }
 
 ###
@@ -26,6 +27,23 @@ Content-Type: application/json
   "Email": "JohnDoe@example.com",
   "Name": "John Doe",
   "Post": "Developer",
+  "Enabled": true
+}
+###
+
+PUT {{TaskManagerBackEnd_HostAddress}}/User/UpdatePassword
+Content-Type: application/json
+
+{
+  "IdUser": 3,
+  "NewPassword": "password123456"
+}
+###
+POST {{TaskManagerBackEnd_HostAddress}}/Team/CreateTeam
+Content-Type: application/json
+
+{
+  "Name": "Development Team",
   "Enabled": true
 }
 

@@ -1,22 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
-using src.TaskManagerBackEnd.DTO;
-using src.TaskManagerBackEnd.Service;
+using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Service;
 
-namespace src.TaskManagerBackEnd.Controllers;
+namespace TaskManagerBackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly IMemberService _memberService;
-    private readonly IConfiguration _conf;
+    private readonly IUserService _userService;
 
-    public UserController(ILogger<UserController> logger, IMemberService memberService, IConfiguration conf)
+    public UserController(ILogger<UserController> logger, IUserService userService)
     {
         _logger = logger;
-        _memberService = memberService;
-        _conf = conf;
+        _userService = userService;
     }
 
     [HttpPost("CreateUser")]
@@ -26,7 +24,7 @@ public class UserController : ControllerBase
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            bool res = _memberService.AddMember(user);
+            bool res = _userService.AddMember(user);
 
             if (!res) return BadRequest("Member not created");
 
@@ -40,13 +38,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("UpdateUser")]
-    public ActionResult<bool> UpdateUser([FromBody] UserUpdateDTO user)
+    public ActionResult<bool> UpdateUser([FromBody] UserUpdateDto user)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            bool res = _memberService.UpdateMember(user);
+            bool res = _userService.UpdateMember(user);
 
             if (!res) return BadRequest("Member not updated");
 
@@ -59,17 +57,41 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("TestarComunicacao")]
-    public ActionResult<string> TestarComunicacao()
+    [HttpPut("UpdatePassword")]
+    public ActionResult<bool> UpdatePassword([FromBody] UserUpdatePasswordDto user)
     {
         try
         {
-            return Ok(_conf["Environment"]);
-        }
-        catch (Exception)
-        {
+            if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            return BadRequest(_conf["Environment"]);
+            bool res = _userService.UpdatePassword(user);
+
+            if (!res) return BadRequest("Password not updated");
+
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+
+    [HttpDelete("DeleteUser")]
+    public ActionResult<bool> DeleteUserr(int idUser)
+    {
+        try
+        {
+            bool res = _userService.DeleteMember(idUser);
+
+            if (!res) return BadRequest("Member not deleted");
+
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
         }
     }
 }
