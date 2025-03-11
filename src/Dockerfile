@@ -12,7 +12,7 @@ WORKDIR /src
 COPY ["./TaskManagerBackEnd.csproj", "./"]
 RUN dotnet restore "./TaskManagerBackEnd.csproj"
 COPY . ./src
-WORKDIR ".src"
+WORKDIR "./src"
 RUN dotnet build "./TaskManagerBackEnd.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final

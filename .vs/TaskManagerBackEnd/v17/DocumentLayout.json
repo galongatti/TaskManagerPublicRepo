@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\taskmanagerbackend.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
       "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\taskmanagerbackend.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -42,10 +46,6 @@
       "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\config\\secretsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4F099EFB-F2AF-8D7F-0D08-C6959740E424}|src\\TaskManagerBackEnd.csproj|solutionrelative:src\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{80FE6B69-F383-4002-AFA5-B7A26BBE166F}|test\\TaskManagerBackEndTest\\TaskManagerBackEndTest.csproj|c:\\users\\galon\\riderprojects\\taskmanagerbackend\\test\\taskmanagerbackendtest\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{80FE6B69-F383-4002-AFA5-B7A26BBE166F}|test\\TaskManagerBackEndTest\\TaskManagerBackEndTest.csproj|solutionrelative:test\\taskmanagerbackendtest\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -57,8 +57,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 6,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0174dea2-fdbe-4ef1-8f99-c0beae78880f}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 3,
@@ -69,11 +81,12 @@
               "RelativeToolTip": "src\\TaskManagerBackEnd.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-03-10T23:51:09.816Z"
+              "WhenOpened": "2025-03-10T23:51:09.816Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "src\\Controllers\\UserController.cs",
@@ -81,23 +94,25 @@
               "RelativeToolTip": "src\\Controllers\\UserController.cs",
               "ViewState": "AgIAAC4AAAAAAAAAAADgvz0AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T17:33:42.868Z"
+              "WhenOpened": "2025-03-10T17:33:42.868Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Dockerfile",
               "RelativeDocumentMoniker": "src\\Dockerfile",
               "ToolTip": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Dockerfile",
               "RelativeToolTip": "src\\Dockerfile",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-03-10T17:31:47.929Z"
+              "WhenOpened": "2025-03-10T17:31:47.929Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 0,
               "Title": "DependencyInjection.cs",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\DependencyInjection.cs",
               "RelativeDocumentMoniker": "src\\DependencyInjection.cs",
@@ -105,11 +120,12 @@
               "RelativeToolTip": "src\\DependencyInjection.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T17:50:47.825Z"
+              "WhenOpened": "2025-03-10T17:50:47.825Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "SecretsManager.cs",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Config\\SecretsManager.cs",
               "RelativeDocumentMoniker": "src\\Config\\SecretsManager.cs",
@@ -117,11 +133,12 @@
               "RelativeToolTip": "src\\Config\\SecretsManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-10T17:03:58.217Z"
+              "WhenOpened": "2025-03-10T17:03:58.217Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "appsettings.development.json",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\appsettings.development.json",
               "RelativeDocumentMoniker": "src\\appsettings.development.json",
@@ -133,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Program.cs",
               "RelativeDocumentMoniker": "src\\Program.cs",
@@ -145,20 +162,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "src\\Properties\\launchSettings.json",
               "ToolTip": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\Properties\\launchSettings.json",
               "RelativeToolTip": "src\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAYwCcAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAYwAsAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-03-10T22:56:45.026Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Container.targets",
               "DocumentMoniker": "C:\\Users\\GaLon\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\build\\Container.targets",
               "RelativeDocumentMoniker": "..\\..\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.21.0\\build\\Container.targets",
@@ -170,7 +187,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "appsettings.production.json",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\appsettings.production.json",
               "RelativeDocumentMoniker": "src\\appsettings.production.json",
@@ -182,7 +199,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\GaLon\\RiderProjects\\TaskManagerBackEnd\\src\\appsettings.json",
               "RelativeDocumentMoniker": "src\\appsettings.json",
