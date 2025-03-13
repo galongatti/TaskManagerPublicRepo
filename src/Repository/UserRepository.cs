@@ -1,14 +1,16 @@
 using Dapper;
 using Npgsql;
-using src.TaskManagerBackEnd.Connection;
+using src.TaskManagerBackEnd;
+using src.TaskManagerBackEnd.Repository;
+using TaskManagerBackEnd.Connection;
 
-namespace src.TaskManagerBackEnd.Repository;
+namespace TaskManagerBackEnd.Repository;
 
 public class UserRepository : IUserRepository
 {
-    private readonly ConnectionDB _connection;
+    private readonly ConnectionDb _connection;
 
-    public UserRepository(ConnectionDB connection)
+    public UserRepository(ConnectionDb connection)
     {
         _connection = connection;
     }
@@ -17,13 +19,13 @@ public class UserRepository : IUserRepository
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
         int res = connection.Execute(@"
-                                     INSERT INTO tasks.user (email, password, post, datecreation, enabled, name, salt)
-                                     VALUES (@Email, @Password, @post, @datecreation, @enabled, @name, @salt)
+                                     INSERT INTO tasks.user (email, password, post, datecreation, enabled, name, salt, idteam)
+                                     VALUES (@Email, @Password, @Post, @DateCreation, @Enabled, @Name, @Salt, @IdTeam)
                                      ",
             new
             {
-                user.Email, user.Password, post = user.Post, DateCreation = DateTime.Today, enabled = user.Enabled,
-                name = user.Name, salt = user.Salt
+                user.Email, user.Password, user.Post, DateCreation = DateTime.Today, user.Enabled,
+                user.Name, user.Salt, user.IdTeam
             });
         _connection.Dispose();
         return res > 0;
@@ -34,23 +36,21 @@ public class UserRepository : IUserRepository
         using NpgsqlConnection connection = _connection.OpenConnection();
         int res = connection.Execute(@"
                                      UPDATE tasks.user
-                                     SET email = @Email, post = @post, enabled = @enabled, name = @name
+                                     SET email = @Email, post = @Post, enabled = @Enabled, name = @Name, idteam = @IdTeam
                                      WHERE iduser = @IdUser
                                      ", new
         {
-            user.Email, post = user.Post, enabled = user.Enabled, name = user.Name,
-            user.IdUser
+            user.Email, user.Post, user.Enabled, user.Name, user.IdTeam, user.IdUser
         });
         _connection.Dispose();
         return res > 0;
     }
 
-    public bool DeleteMember(string id)
+    public bool DeleteMember(int id)
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
         int res = connection.Execute(@"
-                                     UPDATE tasks.user
-                                     SET enabled = false
+                                     DELETE tasks.user
                                      WHERE iduser = @IdUser
                                      ", new { IdUser = id });
         _connection.Dispose();
@@ -61,7 +61,7 @@ public class UserRepository : IUserRepository
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
         User? user = connection.QueryFirstOrDefault<User>(@"
-                                     SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt
+                                     SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, id as IdTeam
                                      FROM tasks.user
                                      WHERE iduser = @IdUser
                                      ", new { IdUser = id });
@@ -71,5 +71,13 @@ public class UserRepository : IUserRepository
     public User GetMemberByEmail(string email)
     {
         throw new NotImplementedException();
+    }
+
+    public bool UpdatePassword(int idUser, string newPassword, string salt)
+    {
+        using NpgsqlConnection connection = _connection.OpenConnection();
+        int res = connection.Execute("UPDATE tasks.user SET password = @Password, salt = @Salt WHERE iduser = @IdUser",
+            new { Password = newPassword, IdUser = idUser, Salt = salt });
+        return res > 0;
     }
 }

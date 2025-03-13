@@ -1,18 +1,22 @@
-using src.TaskManagerBackEnd.Config;
-using src.TaskManagerBackEnd.Connection;
 using src.TaskManagerBackEnd.Repository;
-using src.TaskManagerBackEnd.Service;
+using TaskManagerBackEnd.Config;
+using TaskManagerBackEnd.Connection;
+using TaskManagerBackEnd.Repository;
+using TaskManagerBackEnd.Service;
 
-namespace src.TaskManagerBackEnd;
+namespace TaskManagerBackEnd;
 
 public static class DependencyInjectionConfig
 {
-    public static IServiceCollection AddCustomServices(this IServiceCollection services)
+    public static void AddCustomServices(this IServiceCollection services)
     {
-        services.AddTransient<IMemberService, MemberService>();
-        services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IUserRepository, UserRepository>(); 
+        
+        services.AddTransient<ITeamService, TeamService>();
+        services.AddTransient<ITeamRepository, TeamRepository>();
+        
         services.AddSingleton<SecretsManager>();
-        services.AddSingleton<ConnectionDB>();
-        return services;
+        services.AddSingleton<ConnectionDb>();
     }
 }

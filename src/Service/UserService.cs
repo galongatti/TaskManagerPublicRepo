@@ -1,18 +1,19 @@
-using src.TaskManagerBackEnd.DTO;
+using src.TaskManagerBackEnd;
 using src.TaskManagerBackEnd.Repository;
+using TaskManagerBackEnd.DTO;
 
-namespace src.TaskManagerBackEnd.Service;
+namespace TaskManagerBackEnd.Service;
 
-public class MemberService : IMemberService
+public class UserService : IUserService
 {
     private const int Iteration = 3;
     private readonly string? _pepper;
     private readonly IUserRepository _repository;
 
-    public MemberService(IUserRepository repository, IConfiguration configuration)
+    public UserService(IUserRepository repository, IConfiguration configuration)
     {
         _repository = repository;
-        _pepper = configuration["Hash:pepper"];
+        _pepper = configuration["Hash:pepper"] ?? throw new ArgumentNullException("Pepper not found");
     }
 
     /// <summary>
@@ -34,14 +35,15 @@ public class MemberService : IMemberService
             Enabled = userDto.Enabled,
             Name = userDto.Name,
             Salt = salt,
-            Password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration)
+            Password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration),
+            IdTeam = userDto.IdTeam
         };
 
 
         return _repository.AddMember(user);
     }
 
-    public bool UpdateMember(UserUpdateDTO userDto)
+    public bool UpdateMember(UserUpdateDto userDto)
     {
         User? userAux = GetMemberById(userDto.IdUser);
 
@@ -53,15 +55,16 @@ public class MemberService : IMemberService
             Email = userDto.Email,
             Post = userDto.Post,
             Enabled = userDto.Enabled,
-            Name = userDto.Name
+            Name = userDto.Name,
+            IdTeam = userDto.IdTeam
         };
 
         return _repository.UpdateMember(user);
     }
 
-    public bool DeleteMember(string id)
+    public bool DeleteMember(int id)
     {
-        throw new NotImplementedException();
+        return _repository.DeleteMember(id);
     }
 
     public User? GetMemberById(int id)
@@ -72,5 +75,17 @@ public class MemberService : IMemberService
     public User GetMemberByEmail(string email)
     {
         throw new NotImplementedException();
+    }
+
+    public bool UpdatePassword(UserUpdatePasswordDto userDto)
+    {
+
+        _ = GetMemberById(userDto.IdUser) ?? throw new Exception("User not found");
+        
+        string salt = HashPassword.GenerateSalt();
+        string password = HashPassword.ComputeHash(userDto.NewPassword, salt, _pepper, Iteration);
+
+        return _repository.UpdatePassword(userDto.IdUser, password, salt);
+
     }
 }

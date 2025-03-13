@@ -1,14 +1,14 @@
 using Npgsql;
-using src.TaskManagerBackEnd.Config;
+using TaskManagerBackEnd.Config;
 
-namespace src.TaskManagerBackEnd.Connection;
+namespace TaskManagerBackEnd.Connection;
 
-public class ConnectionDB : IDisposable
+public class ConnectionDb : IDisposable
 {
     private readonly SecretsManager _secretsManager;
     private NpgsqlConnection? _sqlConn;
 
-    public ConnectionDB(SecretsManager secretsManager)
+    public ConnectionDb(SecretsManager secretsManager)
     {
         _secretsManager = secretsManager;
     }
@@ -21,7 +21,7 @@ public class ConnectionDB : IDisposable
 
     public NpgsqlConnection OpenConnection()
     {
-        string? connectionString = _secretsManager.GetConnectionStringAsync().Result;
+        string? connectionString = _secretsManager.GetConnectionStringAsync();
         _sqlConn = new NpgsqlConnection(connectionString);
         _sqlConn.Open();
         return _sqlConn;

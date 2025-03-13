@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="accountSettings">
+    <option name="activeProfile" value="profile:gabriel_dev-258745573639-AdministratorAccess" />
+    <option name="activeRegion" value="sa-east-1" />
+    <option name="recentlyUsedProfiles">
+      <list>
+        <option value="profile:gabriel_dev-258745573639-AdministratorAccess" />
+        <option value="profile:gabriel_dev" />
+        <option value="profile:d-946706dc7f-258745573639-AdministratorAccess" />
+      </list>
+    </option>
+    <option name="recentlyUsedRegions">
+      <list>
+        <option value="sa-east-1" />
+      </list>
+    </option>
+  </component>
+  <component name="explorerToolWindow">
+    <option name="selectedTab" value="Explorer" />
+  </component>
+</project>
