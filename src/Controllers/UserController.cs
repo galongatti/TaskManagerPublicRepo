@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskManagerBackEnd.Config;
 using TaskManagerBackEnd.DTO;
 using TaskManagerBackEnd.Service;
 
@@ -10,11 +11,14 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IUserService _userService;
+    private readonly IConfiguration _configuration;
+    private readonly SecretsManager _secretManager;
 
-    public UserController(ILogger<UserController> logger, IUserService userService)
+    public UserController(ILogger<UserController> logger, IUserService userService, SecretsManager secretManager)
     {
         _logger = logger;
         _userService = userService;
+       _secretManager = secretManager;
     }
 
     [HttpPost("CreateUser")]
@@ -92,6 +96,21 @@ public class UserController : ControllerBase
         {
             _logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
+        }
+    }
+    
+    [HttpGet("TestRequest")]
+    public ActionResult<string> TestRequest()
+    {
+        try
+        {
+            return Ok(_secretManager.GetConnectionStringAsync());
+
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return BadRequest(e.Message);
         }
     }
 }

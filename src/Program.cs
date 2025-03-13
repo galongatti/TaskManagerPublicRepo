@@ -1,3 +1,4 @@
+using Amazon.Extensions.NETCore.Setup;
 using Amazon.SecretsManager;
 
 namespace TaskManagerBackEnd;
@@ -11,12 +12,13 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-        builder.Services.AddAWSService<IAmazonSecretsManager>();
-
         builder.Services.AddCustomServices();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        
+        AWSOptions? awsOptions = builder.Configuration.GetAWSOptions();
+        builder.Services.AddDefaultAWSOptions(awsOptions);
+        builder.Services.AddAWSService<IAmazonSecretsManager>();
 
 
         WebApplication? app = builder.Build();

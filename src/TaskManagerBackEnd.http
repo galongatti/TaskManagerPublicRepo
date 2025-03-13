@@ -1,6 +1,6 @@
 @TaskManagerBackEnd_HostAddress = https://localhost:7186
 
-GET {{TaskManagerBackEnd_HostAddress}}/weatherforecast/
+GET {{TaskManagerBackEnd_HostAddress}}/user/TestRequest
 Accept: application/json
 
 ###
@@ -8,9 +8,9 @@ POST {{TaskManagerBackEnd_HostAddress}}/user/CreateUser
 Content-Type: application/json
 
 {
-  "Email": "example@example.com",
+  "Email": "Maria@example.com",
   "Password": "password123",
-  "Name": "John Doe",
+  "Name": "Maria",
   "Post": "Developer",
   "Enabled": true,
   "IdTeam": 1

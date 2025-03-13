@@ -21,7 +21,7 @@ public class ConnectionDb : IDisposable
 
     public NpgsqlConnection OpenConnection()
     {
-        string? connectionString = _secretsManager.GetConnectionStringAsync().Result;
+        string? connectionString = _secretsManager.GetConnectionStringAsync();
         _sqlConn = new NpgsqlConnection(connectionString);
         _sqlConn.Open();
         return _sqlConn;
