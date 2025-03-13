@@ -1,4 +1,4 @@
-@TaskManagerBackEnd_HostAddress = https://localhost:7186
+@TaskManagerBackEnd_HostAddress = https://15.228.180.164:80
 
 GET {{TaskManagerBackEnd_HostAddress}}/user/TestRequest
 Accept: application/json
