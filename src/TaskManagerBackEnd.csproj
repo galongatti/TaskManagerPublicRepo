@@ -13,6 +13,15 @@
       <Content Remove=".github\**" />
       <EmbeddedResource Remove=".github\**" />
       <None Remove=".github\**" />
+      <Content Update="appsettings.production.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="appsettings.development.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
