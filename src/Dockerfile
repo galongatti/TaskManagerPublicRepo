@@ -25,4 +25,5 @@ FROM base AS final
 ENV ASPNETCORE_ENVIRONMENT=production
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ./appsettings.json ./appsettings.json
 ENTRYPOINT ["dotnet", "TaskManagerBackEnd.dll"]
