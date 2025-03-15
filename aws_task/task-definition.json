@@ -17,6 +17,18 @@
       "essential": true,
       "environment": [
         {
+          "name": "HashPepper",
+          "value": "TaskManager"
+        },
+        {
+          "name": "ConnectionDBUser",
+          "value": "rds!db-587d011e-559b-4d22-ab0b-c0b1bd7d7a85"
+        },
+        {
+          "name": "ConnectionDBEndpoint",
+          "value": "endpoint_rds"
+        },
+        {
           "name": "environment",
           "value": "production"
         },
