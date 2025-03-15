@@ -13,7 +13,7 @@ public class UserService : IUserService
     public UserService(IUserRepository repository, IConfiguration configuration)
     {
         _repository = repository;
-        _pepper = configuration["Hash:pepper"] ?? throw new ArgumentNullException("Pepper not found");
+        _pepper = configuration["HashPepper"] ?? throw new ArgumentNullException("Pepper not found");
     }
 
     /// <summary>

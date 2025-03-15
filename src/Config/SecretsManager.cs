@@ -33,7 +33,7 @@ public class SecretsManager
         string enviroment = _configuration["Environment"] ??
                             throw new ArgumentNullException("Environmet variable not found");
         
-        string userSecret = _configuration["ConnectionDB:User"] ?? throw new ArgumentNullException("User not found");
+        string userSecret = _configuration["ConnectionDBUser"] ?? throw new ArgumentNullException("User not found");
         string user = GetSecretValueAsync(userSecret);
         Dictionary<string, string>? secretDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(user);
 
@@ -44,7 +44,7 @@ public class SecretsManager
         else
         {
            
-            string endpointSecret = _configuration["ConnectionDB:Endpoint"] ??
+            string endpointSecret = _configuration["ConnectionDBEndpoint"] ??
                                     throw new ArgumentNullException("Endpoint not found");
 
             string endpoint = GetSecretValueAsync(endpointSecret);
