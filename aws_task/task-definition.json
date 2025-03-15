@@ -1,5 +1,5 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:sa-east-1:258745573639:task-definition/TaskConfiguration:8",
+  "taskDefinitionArn": "arn:aws:ecs:sa-east-1:258745573639:task-definition/TaskConfiguration:12",
   "containerDefinitions": [
     {
       "name": "TaskManagerBackend",
@@ -16,18 +16,6 @@
       ],
       "essential": true,
       "environment": [
-        {
-          "name": "HashPepper",
-          "value": "TaskManager"
-        },
-        {
-          "name": "ConnectionDBUser",
-          "value": "rds!db-587d011e-559b-4d22-ab0b-c0b1bd7d7a85"
-        },
-        {
-          "name": "ConnectionDBEndpoint",
-          "value": "endpoint_rds"
-        },
         {
           "name": "environment",
           "value": "production"
@@ -57,7 +45,7 @@
   "taskRoleArn": "arn:aws:iam::258745573639:role/ecsTaskExecutionRole",
   "executionRoleArn": "arn:aws:iam::258745573639:role/ecsTaskExecutionRole",
   "networkMode": "awsvpc",
-  "revision": 8,
+  "revision": 12,
   "volumes": [],
   "status": "ACTIVE",
   "requiresAttributes": [
