@@ -25,6 +25,12 @@ public class UserService : IUserService
     /// </returns>
     public bool AddMember(UserInsertDTO userDto)
     {
+        
+        User userExist = GetMemberByEmail(userDto.Email);
+        
+        if (userExist is not null)
+            throw new Exception("User already exists");
+        
         string salt = HashPassword.GenerateSalt();
 
         User user = new()
@@ -47,7 +53,7 @@ public class UserService : IUserService
     {
         User? userAux = GetMemberById(userDto.IdUser);
 
-        if (userAux is null) return false;
+        if (userAux is null) throw new Exception("User does not exists");
 
         User user = new()
         {
@@ -74,7 +80,7 @@ public class UserService : IUserService
 
     public User GetMemberByEmail(string email)
     {
-        throw new NotImplementedException();
+        return _repository.GetMemberByEmail(email);
     }
 
     public bool UpdatePassword(UserUpdatePasswordDto userDto)

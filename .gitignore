@@ -5,3 +5,5 @@ riderModule.iml
 /_ReSharper.Caches/
 .vs/
 ./idea
+./aws_task
+TaskManagerBackEnd.sln.DotSettings.user

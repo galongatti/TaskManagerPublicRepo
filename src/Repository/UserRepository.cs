@@ -61,7 +61,7 @@ public class UserRepository : IUserRepository
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
         User? user = connection.QueryFirstOrDefault<User>(@"
-                                     SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, id as IdTeam
+                                     SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, idteam as IdTeam
                                      FROM tasks.user
                                      WHERE iduser = @IdUser
                                      ", new { IdUser = id });
@@ -70,7 +70,13 @@ public class UserRepository : IUserRepository
 
     public User GetMemberByEmail(string email)
     {
-        throw new NotImplementedException();
+        using NpgsqlConnection connection = _connection.OpenConnection();
+        User? user = connection.QueryFirstOrDefault<User>(@"
+                                     SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, idteam as IdTeam
+                                     FROM tasks.user
+                                     WHERE email = @Email
+                                     ", new { Email = email });
+        return user;
     }
 
     public bool UpdatePassword(int idUser, string newPassword, string salt)
