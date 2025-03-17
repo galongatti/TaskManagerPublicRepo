@@ -17,7 +17,7 @@ public interface IUserService
     public bool UpdateMember(UserUpdateDto user);
     public bool DeleteMember(int id);
     public User GetMemberById(int id);
-    public User GetMemberByEmail(string email);
+    public User? GetMemberByEmail(string email);
     
     public bool UpdatePassword(UserUpdatePasswordDto user);
 }

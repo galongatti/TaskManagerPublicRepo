@@ -1,4 +1,4 @@
-@TaskManagerBackEnd_HostAddress = http://54.94.42.230:8080
+@TaskManagerBackEnd_HostAddress = https://localhost:7186
 
 GET {{TaskManagerBackEnd_HostAddress}}/user/TestRequest
 Accept: application/json
@@ -43,7 +43,7 @@ POST {{TaskManagerBackEnd_HostAddress}}/Team/CreateTeam
 Content-Type: application/json
 
 {
-  "Name": "Development Team",
+  "Name": "Financial Team",
   "Enabled": true
 }
 

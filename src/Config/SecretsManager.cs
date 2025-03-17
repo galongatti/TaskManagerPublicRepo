@@ -32,18 +32,17 @@ public class SecretsManager
     {
         string enviroment = _configuration["Environment"] ??
                             throw new ArgumentNullException("Environmet variable not found");
-        
-        string userSecret = _configuration["ConnectionDBUser"] ?? throw new ArgumentNullException("User not found");
-        string user = GetSecretValueAsync(userSecret);
-        Dictionary<string, string>? secretDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(user);
 
         if (enviroment.Equals("development"))
         {
-            return $"Server=localhost:3309;Database=TaskManager;User Id={secretDictionary["username"]};Password={secretDictionary["password"]};";
+            return _configuration["localconnection"];
         }
         else
         {
-           
+            string userSecret = _configuration["ConnectionDBUser"] ?? throw new ArgumentNullException("User not found");
+            string user = GetSecretValueAsync(userSecret);
+            Dictionary<string, string>? secretDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(user);
+
             string endpointSecret = _configuration["ConnectionDBEndpoint"] ??
                                     throw new ArgumentNullException("Endpoint not found");
 
@@ -51,7 +50,8 @@ public class SecretsManager
             Dictionary<string, string>? secretHostDictionary =
                 JsonSerializer.Deserialize<Dictionary<string, string>>(endpoint);
 
-            return $"Server={secretHostDictionary["Endpoint"]};Database=TaskManager;User Id={secretDictionary["username"]};Password={secretDictionary["password"]};";
+            return
+                $"Server={secretHostDictionary["Endpoint"]};Database=TaskManager;User Id={secretDictionary["username"]};Password={secretDictionary["password"]};";
         }
     }
 }

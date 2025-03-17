@@ -11,7 +11,6 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IUserService _userService;
-    private readonly IConfiguration _configuration;
     private readonly SecretsManager _secretManager;
 
     public UserController(ILogger<UserController> logger, IUserService userService, SecretsManager secretManager)
@@ -82,7 +81,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("DeleteUser")]
-    public ActionResult<bool> DeleteUserr(int idUser)
+    public ActionResult<bool> DeleteUser(int idUser)
     {
         try
         {
