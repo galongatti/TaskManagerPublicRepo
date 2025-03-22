@@ -7,4 +7,5 @@ public interface ITeamRepository
 {
     bool CreateTeam(Team team);
     Team GetTeamByName(string name);
+    bool UpdateTeam(Team team);
 }

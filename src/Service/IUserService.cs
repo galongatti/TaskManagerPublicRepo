@@ -15,9 +15,10 @@ public interface IUserService
     public bool AddMember(UserInsertDTO user);
 
     public bool UpdateMember(UserUpdateDto user);
-    public bool DeleteMember(int id);
-    public User GetMemberById(int id);
-    public User? GetMemberByEmail(string email);
+    public bool DeleteUser(int id);
+    public User? GetUserById(int id);
+    public User? GetUserByEmail(string email);
     
     public bool UpdatePassword(UserUpdatePasswordDto user);
+    public bool CheckPassword(UserLoginDto user);
 }

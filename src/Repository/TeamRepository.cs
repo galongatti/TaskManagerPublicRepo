@@ -37,4 +37,20 @@ public class TeamRepository : ITeamRepository
 
         return res;
     }
+
+    public bool UpdateTeam(Team team)
+    {
+        using NpgsqlConnection connection = _connection.OpenConnection();
+
+        int res = connection.Execute(@"
+                UPDATEtasks.team
+                SET name = @Name, enabled = @Enabled;
+                WHERE idteam = @IdTeam;
+        ", new
+        {
+            team.Name, team.Enabled, team.IdTeam
+        });
+
+        return res > 0;
+    }
 }

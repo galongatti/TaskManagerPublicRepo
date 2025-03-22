@@ -46,18 +46,15 @@ public class UserRepository : IUserRepository
         return res > 0;
     }
 
-    public bool DeleteMember(int id)
+    public bool DeleteUser(int id)
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
-        int res = connection.Execute(@"
-                                     DELETE tasks.user
-                                     WHERE iduser = @IdUser
-                                     ", new { IdUser = id });
+        int res = connection.Execute(@"DELETE FROM tasks.user WHERE iduser = @IdUser", new { IdUser = id });
         _connection.Dispose();
         return res > 0;
     }
 
-    public User? GetMemberById(int id)
+    public User? GetUserById(int id)
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
         User? user = connection.QueryFirstOrDefault<User>(@"
@@ -68,7 +65,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public User GetMemberByEmail(string email)
+    public User GetUserByEmail(string email)
     {
         using NpgsqlConnection connection = _connection.OpenConnection();
         User? user = connection.QueryFirstOrDefault<User>(@"

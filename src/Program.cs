@@ -1,5 +1,9 @@
+using System.Text;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.SecretsManager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using TaskManagerBackEnd.Middlewares;
 
 namespace TaskManagerBackEnd;
 
@@ -13,6 +17,31 @@ public class Program
         builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
         builder.Services.AddControllers();
+        
+        string keyStr = builder.Configuration.GetValue<string>("JwtKey");
+        
+        byte[] key = Encoding.ASCII.GetBytes(keyStr);
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "TaskManager",
+                    ValidAudience = "TaskManager",
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+            });
+        
+        builder.Services.AddAuthorization();
+        
         builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddCustomServices();
@@ -34,7 +63,9 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseMiddleware<JwtMiddleware>();
         app.UseAuthorization();
+        
         app.MapControllers();
 
         app.UseCors(cors =>

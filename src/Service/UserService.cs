@@ -1,21 +1,15 @@
 using src.TaskManagerBackEnd;
 using src.TaskManagerBackEnd.Repository;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Model;
 
 namespace TaskManagerBackEnd.Service;
 
-public class UserService : IUserService
+public class UserService(IUserRepository repository, IConfiguration configuration, IAssignmentService assignmentService) : IUserService
 {
     private const int Iteration = 3;
-    private readonly string? _pepper;
-    private readonly IUserRepository _repository;
-
-    public UserService(IUserRepository repository, IConfiguration configuration)
-    {
-        _repository = repository;
-        _pepper = configuration["HashPepper"] ?? throw new ArgumentNullException("Pepper not found");
-    }
-
+    private readonly string? _pepper = configuration["HashPepper"] ??
+                                       throw new ArgumentNullException(nameof(configuration), "Pepper not found");
     /// <summary>
     ///     Adds a new member to the repository.
     /// </summary>
@@ -25,12 +19,11 @@ public class UserService : IUserService
     /// </returns>
     public bool AddMember(UserInsertDTO userDto)
     {
-        
-        User userExist = GetMemberByEmail(userDto.Email);
-        
+        User userExist = GetUserByEmail(userDto.Email);
+
         if (userExist is not null)
             throw new Exception("User already exists");
-        
+
         string salt = HashPassword.GenerateSalt();
 
         User user = new()
@@ -46,12 +39,12 @@ public class UserService : IUserService
         };
 
 
-        return _repository.AddMember(user);
+        return repository.AddMember(user);
     }
 
     public bool UpdateMember(UserUpdateDto userDto)
     {
-        User? userAux = GetMemberById(userDto.IdUser);
+        User? userAux = GetUserById(userDto.IdUser);
 
         if (userAux is null) throw new Exception("User does not exists");
 
@@ -65,33 +58,46 @@ public class UserService : IUserService
             IdTeam = userDto.IdTeam
         };
 
-        return _repository.UpdateMember(user);
+        return repository.UpdateMember(user);
     }
 
-    public bool DeleteMember(int id)
+    public bool DeleteUser(int id)
     {
-        return _repository.DeleteMember(id);
+        List<Assignment> assignments = assignmentService.GetAssignmentsByUserId(id);
+        if(assignments.Any()) throw new Exception("The user has assignments found.");
+        
+        return repository.DeleteUser(id);
     }
 
-    public User? GetMemberById(int id)
+    public User? GetUserById(int id)
     {
-        return _repository.GetMemberById(id);
+        return repository.GetUserById(id);
     }
 
-    public User GetMemberByEmail(string email)
+    public User GetUserByEmail(string email)
     {
-        return _repository.GetMemberByEmail(email);
+        return repository.GetUserByEmail(email);
     }
 
     public bool UpdatePassword(UserUpdatePasswordDto userDto)
     {
+        _ = GetUserById(userDto.IdUser) ?? throw new Exception("User not found");
 
-        _ = GetMemberById(userDto.IdUser) ?? throw new Exception("User not found");
-        
         string salt = HashPassword.GenerateSalt();
-        string password = HashPassword.ComputeHash(userDto.NewPassword, salt, _pepper, Iteration);
+        string password = HashPassword.ComputeHash(userDto.NewPassword, salt, _pepper!, Iteration);
 
-        return _repository.UpdatePassword(userDto.IdUser, password, salt);
+        return repository.UpdatePassword(userDto.IdUser, password, salt);
+    }
 
+    public bool CheckPassword(UserLoginDto userLoginDto)
+    {
+        User userAux = GetUserByEmail(userLoginDto.Email);
+
+        if (userAux is null) throw new Exception("User does not exists");
+
+        string passwordUserLoginDto =
+            HashPassword.ComputeHash(userLoginDto.Password, userAux.Salt, _pepper!, Iteration);
+
+        return passwordUserLoginDto.Equals(userAux.Password);
     }
 }

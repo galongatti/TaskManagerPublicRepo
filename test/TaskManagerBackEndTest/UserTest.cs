@@ -10,16 +10,21 @@ namespace TaskManagerBackEndTest
 {
     public class UserTest
     {
+        private (UserService, Mock<IUserRepository>, Mock<IConfiguration>, Mock<IAssignmentService>) SetupUserService()
+        {
+            Mock<IUserRepository> mockRepository = new();
+            Mock<IConfiguration> mockConfiguration = new();
+            Mock<IAssignmentService> mockAssignmentService = new();
+            mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
+
+            UserService userService = new(mockRepository.Object, mockConfiguration.Object, mockAssignmentService.Object);
+            return (userService, mockRepository, mockConfiguration, mockAssignmentService);
+        }
+        
         [Fact]
         public void TestUserCreation_UserDoesNotExist()
         {
-            //Mocking the repository and configuration
-            Mock<IUserRepository> mockRepository = new();
-            Mock<IConfiguration> mockConfiguration = new();
-            mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
-            
-            //Creating the UserService class, passing the mocked repository and configuration as parameters
-            UserService userService = new(mockRepository.Object, mockConfiguration.Object);
+            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
             //Creating a UserInsertDTO object with the data of the user to be created
             UserInsertDTO userDto = new()
@@ -33,7 +38,7 @@ namespace TaskManagerBackEndTest
             };
             
             //Mocking the GetMemberByEmail method to return null, simulating that the user does not exist
-            mockRepository.Setup(repo => repo.GetMemberByEmail(userDto.Email)).Returns((User)null!);
+            mockRepository.Setup(repo => repo.GetUserByEmail(userDto.Email)).Returns((User)null!);
             
             //Mocking the AddMember method to return true, simulating that the user was successfully added
             mockRepository.Setup(repo => repo.AddMember(It.IsAny<User>()
@@ -44,7 +49,7 @@ namespace TaskManagerBackEndTest
             
             //Asserting that the result is true
             Assert.True(result);
-            mockRepository.Verify(repo => repo.GetMemberByEmail(userDto.Email), Times.Once);
+            mockRepository.Verify(repo => repo.GetUserByEmail(userDto.Email), Times.Once);
             mockRepository.Verify(repo => repo.AddMember(It.Is<User>(u => u.Email == userDto.Email && u.Name == userDto.Name)), Times.Once);
             
         }
@@ -52,13 +57,9 @@ namespace TaskManagerBackEndTest
         [Fact]
         public void TestUserCreation_UserExists()
         {
-            Mock<IUserRepository> mockRepository = new();
-            Mock<IConfiguration> mockConfiguration = new();
-            mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
-
-            UserService userService = new(mockRepository.Object, mockConfiguration.Object);
+            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
-            mockRepository.Setup(repo => repo.GetMemberByEmail(It.IsAny<string>())).Returns(new User());
+            mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(new User());
             
             UserInsertDTO userDto = new()
             {
@@ -75,22 +76,18 @@ namespace TaskManagerBackEndTest
                 Email = "test@example.com"
             };
 
-            mockRepository.Setup(repo => repo.GetMemberByEmail(It.IsAny<string>())).Returns(existingUser);
+            mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(existingUser);
 
             Exception exception = Assert.Throws<Exception>(() => userService.AddMember(userDto));
             Assert.Equal("User already exists", exception.Message);
-            mockRepository.Verify(repo => repo.GetMemberByEmail(It.IsAny<string>()), Times.Once);
+            mockRepository.Verify(repo => repo.GetUserByEmail(It.IsAny<string>()), Times.Once);
             mockRepository.Verify(repo => repo.AddMember(It.IsAny<User>()), Times.Never);
         }
 
         [Fact]
         public void TestUserUpdate_UserExists()
         {
-            Mock<IUserRepository> mockRepository = new();
-            Mock<IConfiguration> mockConfiguration = new();
-            mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
-            
-            UserService userService = new(mockRepository.Object, mockConfiguration.Object);
+            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
             UserUpdateDto userDto = new()
             {
@@ -102,7 +99,7 @@ namespace TaskManagerBackEndTest
                 IdUser = 1
             };
             
-            mockRepository.Setup(repo => repo.GetMemberById(It.IsAny<int>())).Returns(new User());
+            mockRepository.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(new User());
 
             mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<User>())).Returns(true);
             
@@ -110,20 +107,16 @@ namespace TaskManagerBackEndTest
             
             Assert.True(result);
             
-            mockRepository.Verify(repo => repo.GetMemberById(It.IsAny<int>()), Times.Once);
+            mockRepository.Verify(repo => repo.GetUserById(It.IsAny<int>()), Times.Once);
             mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<User>()), Times.Once);
         }
 
         [Fact]
         public void TestUpdate_UserDoesNotExist()
         {
-            Mock<IUserRepository> mockRepository = new();
-            Mock<IConfiguration> mockConfiguration = new();
-            mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
-
-            UserService userService = new(mockRepository.Object, mockConfiguration.Object);
+            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
-            mockRepository.Setup(repo => repo.GetMemberById(It.IsAny<int>())).Returns((User)null!);
+            mockRepository.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns((User)null!);
             mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<User>())).Returns(false);
 
             UserUpdateDto userDto = new()
@@ -135,15 +128,12 @@ namespace TaskManagerBackEndTest
                 IdTeam = 1,
                 IdUser = 1
             };
-            
-            bool result = userService.UpdateMember(userDto);
-            
-            
-            
 
-
-
-
+            Exception exception = Assert.Throws<Exception>(() => userService.UpdateMember(userDto));
+            Assert.Equal("User does not exists", exception.Message);
+            
+            mockRepository.Verify(repo => repo.GetUserById(It.IsAny<int>()), Times.Once);
+            mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<User>()), Times.Never);
         }
         
     }
