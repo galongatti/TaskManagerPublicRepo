@@ -4,8 +4,8 @@ public interface IUserRepository
 {
     public bool AddMember(User user);
     public bool UpdateMember(User user);
-    public bool DeleteMember(int id);
-    public User? GetMemberById(int id);
-    public User GetMemberByEmail(string email);
+    public bool DeleteUser(int id);
+    public User? GetUserById(int id);
+    public User GetUserByEmail(string email);
     public bool UpdatePassword(int idUser, string newPassword, string salt);
 }

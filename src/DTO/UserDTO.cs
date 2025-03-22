@@ -26,3 +26,9 @@ public struct UserUpdatePasswordDto
     public int IdUser { get; set; }
     public string NewPassword { get; set; }
 }
+
+public struct UserLoginDto
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
+}

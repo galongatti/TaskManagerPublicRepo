@@ -12,9 +12,12 @@ public static class DependencyInjectionConfig
     {
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IUserRepository, UserRepository>(); 
-        
         services.AddTransient<ITeamService, TeamService>();
-        services.AddTransient<ITeamRepository, TeamRepository>();
+        services.AddTransient<ITeamRepository, TeamRepository>();  
+        services.AddTransient<IAssignmentRepository, AssignmentRepository>();
+        services.AddTransient<IAssignmentService, AssignmentService>();
+        
+        services.AddTransient<ITokenService, TokenService>();
         
         services.AddSingleton<SecretsManager>();
         services.AddSingleton<ConnectionDb>();

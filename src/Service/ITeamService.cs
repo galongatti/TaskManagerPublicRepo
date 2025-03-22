@@ -5,8 +5,8 @@ namespace TaskManagerBackEnd.Service;
 
 public interface ITeamService
 {
-    public  bool AddTeam(TeamInsertDto team);
-    public  bool UpdateTeam(Team team);
-    public  bool DeleteTeam(Team team);
-    public Team GetTeamByName(string name);
+    bool AddTeam(TeamInsertDto team);
+    bool UpdateTeam(TeamUpdateDto team);
+    bool DeleteTeam(Team team);
+    Team GetTeamByName(string name);
 }

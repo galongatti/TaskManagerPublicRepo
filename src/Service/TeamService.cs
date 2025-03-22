@@ -30,9 +30,21 @@ public class TeamService : ITeamService
         return _repository.CreateTeam(team);
     }
 
-    public bool UpdateTeam(Team team)
+    public bool UpdateTeam(TeamUpdateDto teamDto)
     {
-        throw new NotImplementedException();
+        Team existingTeam = _repository.GetTeamByName(teamDto.Name);
+        if(existingTeam is null)
+            throw new ArgumentException("Team does not exists");
+        
+        Team team = new()
+        {
+            Name = teamDto.Name,
+            Enabled = teamDto.Enabled,
+            IdTeam = teamDto.IdTeam
+        };
+
+
+        return _repository.UpdateTeam(team);
     }
 
     public bool DeleteTeam(Team team)
