@@ -72,16 +72,29 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
             ").ToList();
     }
 
-    public List<Assignment> GetAssignmentsByUserId(int userId)
+    public List<Assignment> GetAssignmentsByUserId(int[] usersId)
     {
         using NpgsqlConnection connection = connectionDb.OpenConnection();
         return connection.Query<Assignment>(@"
             SELECT idtask, title, description, datecreation, deadline, iduser, status, dateconclusion
             FROM tasks.task
-            WHERE iduser = @IdUser
+            WHERE iduser in @IdUser
             ", new
         {
-            IdUser = userId
+            IdUser = usersId
+        }).ToList();
+    }
+
+
+    public List<Assignment> GetAssignmentsByTeamsId(int[] teamId)
+    {
+        using NpgsqlConnection connection = connectionDb.OpenConnection();
+        return connection.Query<Assignment>(@"
+            SELECT idtask, title, description, datecreation, deadline, iduser, status, dateconclusion
+            FROM tasks.task
+            WHERE iduser = ANY(SELECT iduser FROM tasks.user WHERE idteam = ANY(@IdTeam))", new
+        {
+            IdTeam = teamId
         }).ToList();
     }
 }

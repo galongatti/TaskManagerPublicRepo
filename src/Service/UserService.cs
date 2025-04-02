@@ -17,7 +17,7 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
     /// <returns>
     ///     A boolean value indicating whether the member was successfully added.
     /// </returns>
-    public bool AddMember(UserInsertDTO userDto)
+    public bool AddUser(UserInsertDTO userDto)
     {
         User userExist = GetUserByEmail(userDto.Email);
 
@@ -42,7 +42,7 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
         return repository.AddMember(user);
     }
 
-    public bool UpdateMember(UserUpdateDto userDto)
+    public bool UpdateUser(UserUpdateDto userDto)
     {
         User? userAux = GetUserById(userDto.IdUser);
 
@@ -63,7 +63,8 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
 
     public bool DeleteUser(int id)
     {
-        List<Assignment> assignments = assignmentService.GetAssignmentsByUserId(id);
+        int[] idUser = { id };
+        List<Assignment> assignments = assignmentService.GetAssignmentsByUserId(idUser);
         if(assignments.Any()) throw new Exception("The user has assignments found.");
         
         return repository.DeleteUser(id);
@@ -99,5 +100,42 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
             HashPassword.ComputeHash(userLoginDto.Password, userAux.Salt, _pepper!, Iteration);
 
         return passwordUserLoginDto.Equals(userAux.Password);
+    }
+
+    public List<User> GetUserByTeamId(int idTeam)
+    {
+        return repository.GetUserByTeamId(idTeam);
+    }
+
+    /// <summary>
+    ///     Adds a new member to the repository.
+    /// </summary>
+    /// <param name="userDto">The user data transfer object containing the details of the member to be added.</param>
+    /// <returns>
+    ///     A boolean value indicating whether the member was successfully added.
+    /// </returns>
+    public bool AddUserSeed(UserInsertDTO userDto)
+    {
+        User userExist = GetUserByEmail(userDto.Email);
+
+        if (userExist is not null)
+            return false;
+
+        string salt = HashPassword.GenerateSalt();
+
+        User user = new()
+        {
+            Email = userDto.Email,
+            Post = userDto.Post,
+            DateCreation = DateTime.Today,
+            Enabled = userDto.Enabled,
+            Name = userDto.Name,
+            Salt = salt,
+            Password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration),
+            IdTeam = userDto.IdTeam
+        };
+
+
+        return repository.AddMember(user);
     }
 }

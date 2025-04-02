@@ -48,7 +48,7 @@ public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
         }
         else
         {
-            bool isAllowed = Array.Find(Roles, r => r == user.Post) != null;
+            bool isAllowed = (Array.Find(Roles, r => r == user.Post) != null) || (Array.Find(Roles, r => r == "*") != null);
 
             if (!isAllowed)
                 SetResultUnauthorized(context);

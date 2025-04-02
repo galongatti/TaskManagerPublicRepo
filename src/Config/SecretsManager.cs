@@ -28,30 +28,5 @@ public class SecretsManager
         return response.SecretString;
     }
 
-    public string? GetConnectionStringAsync()
-    {
-        string enviroment = _configuration["Environment"] ??
-                            throw new ArgumentNullException("Environmet variable not found");
-
-        if (enviroment.Equals("development"))
-        {
-            return _configuration["localconnection"];
-        }
-        else
-        {
-            string userSecret = _configuration["ConnectionDBUser"] ?? throw new ArgumentNullException("User not found");
-            string user = GetSecretValueAsync(userSecret);
-            Dictionary<string, string>? secretDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(user);
-
-            string endpointSecret = _configuration["ConnectionDBEndpoint"] ??
-                                    throw new ArgumentNullException("Endpoint not found");
-
-            string endpoint = GetSecretValueAsync(endpointSecret);
-            Dictionary<string, string>? secretHostDictionary =
-                JsonSerializer.Deserialize<Dictionary<string, string>>(endpoint);
-
-            return
-                $"Server={secretHostDictionary["Endpoint"]};Database=TaskManager;User Id={secretDictionary["username"]};Password={secretDictionary["password"]};";
-        }
-    }
+  
 }
