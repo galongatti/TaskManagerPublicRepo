@@ -83,4 +83,13 @@ public class UserRepository : IUserRepository
             new { Password = newPassword, IdUser = idUser, Salt = salt });
         return res > 0;
     }
+
+    public List<User> GetUserByTeamId(int idTeam)
+    {
+        using NpgsqlConnection connection = _connection.OpenConnection();
+        return connection.Query<User>(@"
+                                     SELECT * FROM tasks.user
+                                     WHERE idteam = @IdTeam
+                                     ", new { IdTeam = idTeam }).ToList();
+    }
 }

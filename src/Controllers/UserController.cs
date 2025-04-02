@@ -10,31 +10,19 @@ namespace TaskManagerBackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class UserController(ILogger<UserController> logger, IUserService userService, ITokenService tokenService)
+    : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
-    private readonly IUserService _userService;
-    private readonly SecretsManager _secretManager;
-    private readonly ITokenService _tokenService;
-
-    public UserController(ILogger<UserController> logger, IUserService userService, SecretsManager secretManager, ITokenService tokenService)
-    {
-        _logger = logger;
-        _userService = userService;
-        _secretManager = secretManager;
-        _tokenService = tokenService;
-    }
-
     [HttpPost("CreateUser")]
     [Authorize]
-    [CustomAuthorize(["Admin","Developer"])]
+    [CustomAuthorize(["Admin"])]
     public ActionResult<bool> CreateUser([FromBody] UserInsertDTO user)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            bool res = _userService.AddMember(user);
+            bool res = userService.AddUser(user);
 
             if (!res) return BadRequest("Member not created");
 
@@ -42,7 +30,7 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
@@ -56,7 +44,7 @@ public class UserController : ControllerBase
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            bool res = _userService.UpdateMember(user);
+            bool res = userService.UpdateUser(user);
 
             if (!res) return BadRequest("Member not updated");
 
@@ -64,20 +52,20 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
 
     [HttpPut("UpdatePassword")]
-    [Authorize]
+    [CustomAuthorize(["*"])]
     public ActionResult<bool> UpdatePassword([FromBody] UserUpdatePasswordDto user)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            bool res = _userService.UpdatePassword(user);
+            bool res = userService.UpdatePassword(user);
 
             if (!res) return BadRequest("Password not updated");
 
@@ -85,19 +73,18 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
 
     [HttpDelete("DeleteUser")]
-    [Authorize]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> DeleteUser(int idUser)
     {
         try
         {
-            bool res = _userService.DeleteUser(idUser);
+            bool res = userService.DeleteUser(idUser);
 
             if (!res) return BadRequest("Member not deleted");
 
@@ -105,7 +92,7 @@ public class UserController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
@@ -118,34 +105,18 @@ public class UserController : ControllerBase
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid model");
 
-            bool validUser = _userService.CheckPassword(user);
+            bool validUser = userService.CheckPassword(user);
 
             if (validUser == false) return BadRequest("User or password invalid");
 
-            string token = _tokenService.GenerateToken(user.Email);
+            string token = tokenService.GenerateToken(user.Email);
             
             return Ok(token);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
-        }
-    }
-
-    [HttpGet("TestRequest")]
-    [Authorize]
-    [CustomAuthorize(["Admin", "Developer"])]
-    public ActionResult<string> TestRequest()
-    {
-        try
-        {
-            return Ok(_secretManager.GetConnectionStringAsync());
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, e.Message);
-            return BadRequest(e.Message);
         }
     }
 }

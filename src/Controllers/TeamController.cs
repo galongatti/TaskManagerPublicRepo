@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagerBackEnd.Authorize;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
 
 namespace TaskManagerBackEnd.Controllers;
@@ -21,7 +22,6 @@ public class TeamController : ControllerBase
     }
     
     [HttpPost("CreateTeam")]
-    [Authorize]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> CreateTeam([FromBody] TeamInsertDto team)
     {
@@ -43,7 +43,6 @@ public class TeamController : ControllerBase
     }
     
     [HttpPut("UpdateTeam")]
-    [Authorize]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> UpdateTeam([FromBody] TeamUpdateDto team)
     {
@@ -55,6 +54,39 @@ public class TeamController : ControllerBase
 
             if (!res) return BadRequest("Team not updated");
 
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+
+    [HttpGet("GetTeams")]
+    [CustomAuthorize(["*"])]
+    public ActionResult<List<Team>> GetTeams()
+    {
+        try
+        {
+            List<Team> teams = _teamService.GetTeams();
+
+            return Ok(teams);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+    
+    [HttpDelete("DeleteTeam")]
+    [CustomAuthorize(["Admin"])]
+    public ActionResult<List<Team>> DeleteTeam(int idTeam)
+    {
+        try
+        {
+            bool res  = _teamService.DeleteTeam(idTeam);
             return Ok(res);
         }
         catch (Exception e)

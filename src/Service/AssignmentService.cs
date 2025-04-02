@@ -53,8 +53,13 @@ public class AssignmentService(IAssignmentRepository repository) : IAssignmentSe
         return repository.GetAssignments();
     }
 
-    public List<Assignment> GetAssignmentsByUserId(int userId)
+    public List<Assignment> GetAssignmentsByUserId(int[] usersId)
     {
-        return repository.GetAssignmentsByUserId(userId);
+        return repository.GetAssignmentsByUserId(usersId);
+    }
+
+    public List<Assignment> GetAssignmentsByTeamsId(int[] teamId)
+    {
+        return repository.GetAssignmentsByTeamsId(teamId);
     }
 }

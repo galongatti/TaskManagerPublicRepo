@@ -3,6 +3,7 @@ using Amazon.Extensions.NETCore.Setup;
 using Amazon.SecretsManager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using TaskManagerBackEnd.DataSeed;
 using TaskManagerBackEnd.Middlewares;
 
 namespace TaskManagerBackEnd;
@@ -74,6 +75,13 @@ public class Program
             cors.AllowAnyMethod();
             cors.AllowAnyOrigin();
         });
+
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            UserAdminSeed userSeed = new(scope);
+            userSeed.SeedTeamAdmin();
+            userSeed.SeedUserAdmin();
+        }
 
         app.Run();
     }

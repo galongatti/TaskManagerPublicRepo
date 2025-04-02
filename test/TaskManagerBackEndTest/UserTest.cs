@@ -3,6 +3,7 @@ using Moq;
 using src.TaskManagerBackEnd;
 using src.TaskManagerBackEnd.Repository;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
 
 
@@ -45,7 +46,7 @@ namespace TaskManagerBackEndTest
             )).Returns(true);
             
             //Calling the AddMember method from the UserService class
-            bool result = userService.AddMember(userDto);
+            bool result = userService.AddUser(userDto);
             
             //Asserting that the result is true
             Assert.True(result);
@@ -78,7 +79,7 @@ namespace TaskManagerBackEndTest
 
             mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(existingUser);
 
-            Exception exception = Assert.Throws<Exception>(() => userService.AddMember(userDto));
+            Exception exception = Assert.Throws<Exception>(() => userService.AddUser(userDto));
             Assert.Equal("User already exists", exception.Message);
             mockRepository.Verify(repo => repo.GetUserByEmail(It.IsAny<string>()), Times.Once);
             mockRepository.Verify(repo => repo.AddMember(It.IsAny<User>()), Times.Never);
@@ -103,7 +104,7 @@ namespace TaskManagerBackEndTest
 
             mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<User>())).Returns(true);
             
-            bool result = userService.UpdateMember(userDto);
+            bool result = userService.UpdateUser(userDto);
             
             Assert.True(result);
             
@@ -129,11 +130,43 @@ namespace TaskManagerBackEndTest
                 IdUser = 1
             };
 
-            Exception exception = Assert.Throws<Exception>(() => userService.UpdateMember(userDto));
+            Exception exception = Assert.Throws<Exception>(() => userService.UpdateUser(userDto));
             Assert.Equal("User does not exists", exception.Message);
             
             mockRepository.Verify(repo => repo.GetUserById(It.IsAny<int>()), Times.Once);
             mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<User>()), Times.Never);
+        }
+
+        [Fact]
+        public void TestUserDelete_UserHasAssignment()
+        {
+            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+
+            mockAssignmentService.Setup(service => service.GetAssignmentsByUserId(It.IsAny<int[]>())).Returns([new Assignment(), new Assignment()]);
+            
+            Exception exception = Assert.Throws<Exception>(() => userService.DeleteUser(It.IsAny<int>()));
+            
+            Assert.Equal("The user has assignments found.", exception.Message);
+            
+            mockAssignmentService.Verify(service => service.GetAssignmentsByUserId(It.IsAny<int[]>()), Times.Once);
+            mockRepository.Verify(repo => repo.DeleteUser(It.IsAny<int>()), Times.Never);
+        }
+
+        [Fact]
+        public void TestUserDelete_UserDoesNoHasAssignment()
+        {
+            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            
+            mockAssignmentService.Setup(service => service.GetAssignmentsByUserId(It.IsAny<int[]>())).Returns(new List<Assignment>());
+
+            mockRepository.Setup(repo => repo.DeleteUser(It.IsAny<int>())).Returns(true);
+            
+            bool result = userService.DeleteUser(It.IsAny<int>());
+            
+            Assert.True(result);
+            mockAssignmentService.Verify(service => service.GetAssignmentsByUserId(It.IsAny<int[]>()), Times.Once);
+            
+            mockRepository.Verify(repo => repo.DeleteUser(It.IsAny<int>()), Times.Once);
         }
         
     }

@@ -12,7 +12,6 @@ namespace TaskManagerBackEnd.Controllers;
 public class AssignmentController(IAssignmentService service, ILogger<AssignmentController> logger) : ControllerBase
 {
     [HttpPost("CreateAssignment")]
-    [Authorize]
     [CustomAuthorize(["Admin", "Developer"])]
     public ActionResult<bool> CreateAssignment([FromBody] AssignmentDTOInsert assignmentDTO)
     {
@@ -34,7 +33,6 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
     
     [HttpPut("UpdateAssignment")]
-    [Authorize]
     [CustomAuthorize(["Admin", "Developer"])]
     public ActionResult<bool> UpdateAssignment([FromBody] AssignmentDTOUpdate assignmetDTO)
     {
@@ -56,7 +54,7 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
 
     [HttpGet("GetAssignments")]
-    [Authorize]
+    [CustomAuthorize(["*"])]
     public ActionResult<List<Assignment>> GetAssignments()
     {
         try
@@ -74,6 +72,7 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
 
     [HttpGet("GetAssignmentById")]
+    [CustomAuthorize(["*"])]
     public ActionResult<Assignment> GetAssignmentById(int id)
     {
         try
@@ -87,6 +86,22 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
         {
             logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
+        }
+    }
+
+    [HttpGet("GetAssignmentsTeams")]
+    [CustomAuthorize(["*"])]
+    public ActionResult<List<Assignment>> GetAssignmentsTeams([FromHeader] int[] idTeams)
+    {
+        try
+        {
+            List<Assignment> res = service.GetAssignmentsByTeamsId(idTeams);
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
     

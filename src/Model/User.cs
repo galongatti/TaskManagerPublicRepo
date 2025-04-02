@@ -47,6 +47,6 @@ public class User
     /// <summary>
     /// Gets or sets the team to which the user belongs.
     /// </summary>
-    public int IdTeam { get; set; }
+    public int? IdTeam { get; set; }
 
 }

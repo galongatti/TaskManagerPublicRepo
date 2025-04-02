@@ -7,7 +7,7 @@ public struct UserInsertDTO
     public string Name { get; set; }
     public string Post { get; set; }
     public bool Enabled { get; set; }
-    public int IdTeam { get; set; }
+    public int? IdTeam { get; set; }
 }
 
 public struct UserUpdateDto

@@ -12,13 +12,16 @@ public interface IUserService
     /// <returns>
     ///     A boolean value indicating whether the member was successfully added.
     /// </returns>
-    public bool AddMember(UserInsertDTO user);
+    public bool AddUser(UserInsertDTO user);
+    public bool AddUserSeed(UserInsertDTO user);
 
-    public bool UpdateMember(UserUpdateDto user);
+    public bool UpdateUser(UserUpdateDto user);
     public bool DeleteUser(int id);
     public User? GetUserById(int id);
     public User? GetUserByEmail(string email);
     
     public bool UpdatePassword(UserUpdatePasswordDto user);
     public bool CheckPassword(UserLoginDto user);
+    public List<User> GetUserByTeamId(int idTeam);
+    
 }
