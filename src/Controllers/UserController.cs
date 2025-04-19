@@ -8,13 +8,23 @@ using TaskManagerBackEnd.Service;
 
 namespace TaskManagerBackEnd.Controllers;
 
+/// <summary>
+/// Controller for user management
+/// </summary>
+/// <param name="logger"></param>
+/// <param name="userService"></param>
+/// <param name="tokenService"></param>
 [ApiController]
 [Route("[controller]")]
 public class UserController(ILogger<UserController> logger, IUserService userService, ITokenService tokenService)
     : ControllerBase
 {
-    [HttpPost("CreateUser")]
-    [Authorize]
+    /// <summary>
+    /// Endpoint to create user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    [HttpPost]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> CreateUser([FromBody] UserInsertDTO user)
     {
@@ -34,9 +44,14 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// Endpoint to update user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
 
-    [HttpPut("UpdateUser")]
-    [Authorize]
+    [HttpPut]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> UpdateUser([FromBody] UserUpdateDto user)
     {
@@ -56,8 +71,14 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// Endpoint to update user password
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
 
-    [HttpPut("UpdatePassword")]
+    [HttpPut("update-password")]
     [CustomAuthorize(["*"])]
     public ActionResult<bool> UpdatePassword([FromBody] UserUpdatePasswordDto user)
     {
@@ -78,7 +99,12 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
         }
     }
 
-    [HttpDelete("DeleteUser")]
+    /// <summary>
+    /// Endpoint to delete user
+    /// </summary>
+    /// <param name="idUser"></param>
+    /// <returns></returns>
+    [HttpDelete("{idUser}")]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> DeleteUser(int idUser)
     {
@@ -96,8 +122,14 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// endpoint to login
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
 
-    [HttpPost("Login")]
+    [HttpPost("login")]
     [AllowAnonymous]
     public ActionResult<string> Login([FromBody] UserLoginDto user)
     {

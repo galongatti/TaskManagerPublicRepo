@@ -9,7 +9,6 @@ namespace TaskManagerBackEnd.Authorize;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
-    private IUserService _userService;
     public string[] Roles { get; set; }
 
     public CustomAuthorizeAttribute(string[]? roles)

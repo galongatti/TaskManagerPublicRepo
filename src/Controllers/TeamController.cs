@@ -8,20 +8,19 @@ using TaskManagerBackEnd.Service;
 namespace TaskManagerBackEnd.Controllers;
 
 
+/// <summary>
+/// Controller for team management
+/// </summary>
 [ApiController]
 [Route("[controller]")]
-public class TeamController : ControllerBase
+public class TeamController(ILogger<TeamController> logger, ITeamService teamService) : ControllerBase
 {
-    private readonly ILogger<TeamController> _logger;
-    private readonly ITeamService _teamService;
-
-    public TeamController(ILogger<TeamController> logger, ITeamService teamService)
-    {
-        _logger = logger;
-        _teamService = teamService;
-    }
-    
-    [HttpPost("CreateTeam")]
+    /// <summary>
+    /// Create a new team
+    /// </summary>
+    /// <param name="team"></param>
+    /// <returns></returns>
+    [HttpPost]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> CreateTeam([FromBody] TeamInsertDto team)
     {
@@ -29,7 +28,7 @@ public class TeamController : ControllerBase
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid team");
 
-            bool res = _teamService.AddTeam(team);
+            bool res = teamService.AddTeam(team);
 
             if (!res) return BadRequest("Team not created");
 
@@ -37,12 +36,17 @@ public class TeamController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
     
-    [HttpPut("UpdateTeam")]
+    /// <summary>
+    /// Endpoint for update team
+    /// </summary>
+    /// <param name="team"></param>
+    /// <returns></returns>
+    [HttpPut]
     [CustomAuthorize(["Admin"])]
     public ActionResult<bool> UpdateTeam([FromBody] TeamUpdateDto team)
     {
@@ -50,7 +54,7 @@ public class TeamController : ControllerBase
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid team");
 
-            bool res = _teamService.UpdateTeam(team);
+            bool res = teamService.UpdateTeam(team);
 
             if (!res) return BadRequest("Team not updated");
 
@@ -58,40 +62,51 @@ public class TeamController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// Endpoint for get all teams
+    /// </summary>
+    /// <returns></returns>
 
-    [HttpGet("GetTeams")]
+    [HttpGet]
     [CustomAuthorize(["*"])]
     public ActionResult<List<Team>> GetTeams()
     {
         try
         {
-            List<Team> teams = _teamService.GetTeams();
+            List<Team> teams = teamService.GetTeams();
 
             return Ok(teams);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
     
-    [HttpDelete("DeleteTeam")]
+    /// <summary>
+    /// Endpoint to get team by id
+    /// </summary>
+    /// <param name="idTeam"></param>
+    /// <returns></returns>
+    
+    [HttpDelete("{idTeam}")]
     [CustomAuthorize(["Admin"])]
     public ActionResult<List<Team>> DeleteTeam(int idTeam)
     {
         try
         {
-            bool res  = _teamService.DeleteTeam(idTeam);
+            bool res  = teamService.DeleteTeam(idTeam);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
         }
     }
