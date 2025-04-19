@@ -7,11 +7,22 @@ using TaskManagerBackEnd.Service;
 
 namespace TaskManagerBackEnd.Controllers;
 
+/// <summary>
+/// Endpoint for managing assignments
+/// </summary>
+/// <param name="service"></param>
+/// <param name="logger"></param>
 [ApiController]
 [Route("[controller]")]
 public class AssignmentController(IAssignmentService service, ILogger<AssignmentController> logger) : ControllerBase
 {
-    [HttpPost("CreateAssignment")]
+    
+    /// <summary>
+    /// Endpoint to create assignment
+    /// </summary>
+    /// <param name="assignmentDTO"></param>
+    /// <returns></returns>
+    [HttpPost]
     [CustomAuthorize(["Admin", "Developer"])]
     public ActionResult<bool> CreateAssignment([FromBody] AssignmentDTOInsert assignmentDTO)
     {
@@ -32,7 +43,13 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
         }
     }
     
-    [HttpPut("UpdateAssignment")]
+    /// <summary>
+    /// Endpoint to update assignment
+    /// </summary>
+    /// <param name="assignmetDTO"></param>
+    /// <returns></returns>
+    
+    [HttpPut]
     [CustomAuthorize(["Admin", "Developer"])]
     public ActionResult<bool> UpdateAssignment([FromBody] AssignmentDTOUpdate assignmetDTO)
     {
@@ -52,8 +69,13 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// Endpoint to get all assignments
+    /// </summary>
+    /// <returns></returns>
 
-    [HttpGet("GetAssignments")]
+    [HttpGet]
     [CustomAuthorize(["*"])]
     public ActionResult<List<Assignment>> GetAssignments()
     {
@@ -71,9 +93,14 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
         }
     }
 
-    [HttpGet("GetAssignmentById")]
+    /// <summary>
+    /// Endpoint to get assignment by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
     [CustomAuthorize(["*"])]
-    public ActionResult<Assignment> GetAssignmentById(int id)
+    public ActionResult<Assignment> GetAssignmentById([FromRoute] int id)
     {
         try
         {
@@ -88,10 +115,16 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// Endpoint to get assignments by teams
+    /// </summary>
+    /// <param name="idTeams"></param>
+    /// <returns></returns>
 
-    [HttpGet("GetAssignmentsTeams")]
+    [HttpGet("get-assignments-by-teams")]
     [CustomAuthorize(["*"])]
-    public ActionResult<List<Assignment>> GetAssignmentsTeams([FromHeader] int[] idTeams)
+    public ActionResult<List<Assignment>> GetAssignmentsTeams(int[] idTeams)
     {
         try
         {
@@ -100,8 +133,30 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+    
+    /// <summary>
+    /// Endpoint to get assignments by users
+    /// </summary>
+    /// <param name="idUsers"></param>
+    /// <returns></returns>
+    
+    [HttpGet("get-assignments-by-users")]
+    [CustomAuthorize(["*"])]
+    public ActionResult<List<Assignment>> GetAssignmentsByUser(int[] idUsers)
+    {
+        try
+        {
+            List<Assignment> res = service.GetAssignmentsByUserId(idUsers);
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
         }
     }
     
