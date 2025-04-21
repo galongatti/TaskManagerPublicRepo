@@ -13,6 +13,5 @@ public class Assignment
     public DateTime? DateConclusion { get; set; }
     public int? IdUser { get; set; }
     public StatusAssignmet Status { get; set; }
-
     public string StatusName => Status.GetDisplayName();
 }

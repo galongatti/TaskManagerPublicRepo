@@ -16,9 +16,10 @@ namespace TaskManagerBackEndTest
             Mock<IUserRepository> mockRepository = new();
             Mock<IConfiguration> mockConfiguration = new();
             Mock<IAssignmentService> mockAssignmentService = new();
+            Mock<IServiceProvider> mockServiceProvider = new();
             mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
 
-            UserService userService = new(mockRepository.Object, mockConfiguration.Object, mockAssignmentService.Object);
+            UserService userService = new(mockRepository.Object, mockConfiguration.Object, mockAssignmentService.Object, mockServiceProvider.Object);
             return (userService, mockRepository, mockConfiguration, mockAssignmentService);
         }
         

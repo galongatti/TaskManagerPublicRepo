@@ -24,3 +24,10 @@ public class TeamUpdateDto
     [Required, AllowedValues(true, false)]
     public bool Enabled { get; set; }
 }
+
+public struct TeamGetDto
+{
+    public int IdTeam { get; set; }
+    public string Name { get; set; }
+    public bool Enabled { get; set; }
+}

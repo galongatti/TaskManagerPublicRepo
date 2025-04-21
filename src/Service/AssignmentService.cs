@@ -7,32 +7,32 @@ namespace TaskManagerBackEnd.Service;
 
 public class AssignmentService(IAssignmentRepository repository) : IAssignmentService
 {
-    public int? CreateAssignment(AssignmentDTOInsert taskDTO)
+    public int? CreateAssignment(AssignmentInsertDto taskInsertDto)
     {
         Assignment assignment = new()
         {
-            Title = taskDTO.Title,
-            Deadline = taskDTO.Deadline,
-            Description = taskDTO.Description,
-            Status = taskDTO.Status,
+            Title = taskInsertDto.Title,
+            Deadline = taskInsertDto.Deadline,
+            Description = taskInsertDto.Description,
+            Status = taskInsertDto.Status,
             DateCreation = DateTime.Now,
-            IdUser = taskDTO.IdUser,
+            IdUser = taskInsertDto.IdUser,
         };
         
         return repository.CreateAssignment(assignment);
     }
 
-    public bool UpdateAssignment(AssignmentDTOUpdate taskDTO)
+    public bool UpdateAssignment(AssignmentUpdateDto taskUpdateDto)
     {
         Assignment assignment = new()
         {
-            IdTask = taskDTO.IdTask,
-            Title = taskDTO.Title,
-            Deadline = taskDTO.Deadline,
-            Description = taskDTO.Description,
-            Status = taskDTO.Status,
-            DateConclusion = taskDTO.DateConclusion,
-            IdUser = taskDTO.IdUser
+            IdTask = taskUpdateDto.IdTask,
+            Title = taskUpdateDto.Title,
+            Deadline = taskUpdateDto.Deadline,
+            Description = taskUpdateDto.Description,
+            Status = taskUpdateDto.Status,
+            DateConclusion = taskUpdateDto.DateConclusion,
+            IdUser = taskUpdateDto.IdUser
         };
         
         return repository.UpdateAssignment(assignment);

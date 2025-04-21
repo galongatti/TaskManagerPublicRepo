@@ -9,4 +9,5 @@ public interface IUserRepository
     public User GetUserByEmail(string email);
     public bool UpdatePassword(int idUser, string newPassword, string salt);
     public List<User> GetUserByTeamId(int idTeam);
+    List<User> GetUsers();
 }

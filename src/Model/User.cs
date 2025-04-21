@@ -1,3 +1,5 @@
+using TaskManagerBackEnd.Model;
+
 namespace src.TaskManagerBackEnd;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class User
     /// <summary>
     ///     Gets or sets the unique identifier for the user.
     /// </summary>
-    public int? IdUser { get; set; }
+    public int IdUser { get; set; }
 
     /// <summary>
     ///     Gets or sets the email address of the user.
@@ -45,8 +47,14 @@ public class User
     public string Salt { get; set; }
     
     /// <summary>
-    /// Gets or sets the team to which the user belongs.
+    /// Gets or sets the id team to which the user belongs.
     /// </summary>
     public int? IdTeam { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the team object associated with the user.
+    /// </summary>
+    public Team? Team { get; set; }
+    
 
 }

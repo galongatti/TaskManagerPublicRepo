@@ -60,3 +60,14 @@ public struct UserLoginDto
     [Required, MinLength(8)]
     public string Password { get; set; }
 }
+
+public struct UserGetDto
+{
+    public int IdUser { get; set; }
+    public string Email { get; set; }
+    public string Name { get; set; }
+    public string Post { get; set; }
+    public bool Enabled { get; set; }
+    public int? IdTeam { get; set; }
+    public TeamGetDto? Team { get; set; }
+}

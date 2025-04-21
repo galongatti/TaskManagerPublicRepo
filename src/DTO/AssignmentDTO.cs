@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.OpenApi.Extensions;
+using src.TaskManagerBackEnd;
 using TaskManagerBackEnd.Enum;
 
 namespace TaskManagerBackEnd.DTO;
 
-public class AssignmentDTOInsert
+public class AssignmentInsertDto
 {
     [Required] public string Title { get; set; }
     [Required] public string Description { get; set; }
@@ -18,7 +20,7 @@ public class AssignmentDTOInsert
     public StatusAssignmet Status { get; set; }
 }
 
-public class AssignmentDTOUpdate
+public class AssignmentUpdateDto
 {
     
     [Required]
@@ -43,4 +45,18 @@ public class AssignmentDTOUpdate
     
     [Required]
     public DateTime? DateConclusion { get; set; }
+}
+
+
+public class AssignmentGetDto
+{
+    public int IdTask { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public DateTime? Deadline { get; set; }
+    public DateTime DateCreation { get; set; }
+    public DateTime? DateConclusion { get; set; }
+    public int? IdUser { get; set; }
+    public StatusAssignmet Status { get; set; }
+    public string StatusName => Status.GetDisplayName();
 }
