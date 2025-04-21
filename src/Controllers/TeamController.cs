@@ -21,7 +21,7 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
     /// <param name="team"></param>
     /// <returns></returns>
     [HttpPost]
-    [CustomAuthorize(["Admin"])]
+    [CustomAuthorize]
     public ActionResult<bool> CreateTeam([FromBody] TeamInsertDto team)
     {
         try
@@ -47,7 +47,7 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
     /// <param name="team"></param>
     /// <returns></returns>
     [HttpPut]
-    [CustomAuthorize(["Admin"])]
+    [CustomAuthorize]
     public ActionResult<bool> UpdateTeam([FromBody] TeamUpdateDto team)
     {
         try
@@ -73,7 +73,7 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
     /// <returns></returns>
 
     [HttpGet]
-    [CustomAuthorize(["*"])]
+    [CustomAuthorize]
     public ActionResult<List<Team>> GetTeams()
     {
         try
@@ -96,7 +96,7 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
     /// <returns></returns>
     
     [HttpDelete("{idTeam}")]
-    [CustomAuthorize(["Admin"])]
+    [CustomAuthorize]
     public ActionResult<List<Team>> DeleteTeam(int idTeam)
     {
         try

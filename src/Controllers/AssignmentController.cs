@@ -18,19 +18,22 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
 {
     
     /// <summary>
-    /// Endpoint to create assignment
+    /// Creates a new assignment.
     /// </summary>
-    /// <param name="assignmentDTO"></param>
-    /// <returns></returns>
+    /// <param name="assignmentInsertDto">The data transfer object containing the details of the assignment to be created.</param>
+    /// <returns>
+    /// Returns HTTP 200 with the ID of the created assignment if successful.
+    /// Returns HTTP 400 if the assignment is not created or if the input data is invalid.
+    /// </returns>
     [HttpPost]
-    [CustomAuthorize(["Admin", "Developer"])]
-    public ActionResult<bool> CreateAssignment([FromBody] AssignmentDTOInsert assignmentDTO)
+    [CustomAuthorize]
+    public ActionResult<bool> CreateAssignment([FromBody] AssignmentInsertDto assignmentInsertDto)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid assignment");
 
-            int? res = service.CreateAssignment(assignmentDTO);
+            int? res = service.CreateAssignment(assignmentInsertDto);
 
             if(res is null) return BadRequest("Assignment not created");
 
@@ -44,20 +47,22 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
     
     /// <summary>
-    /// Endpoint to update assignment
+    /// Updates an existing assignment.
     /// </summary>
-    /// <param name="assignmetDTO"></param>
-    /// <returns></returns>
-    
+    /// <param name="assignmetUpdateDto">The data transfer object containing the updated details of the assignment.</param>
+    /// <returns>
+    /// Returns HTTP 200 if the assignment is successfully updated.
+    /// Returns HTTP 400 if the assignment is not updated or if the input data is invalid.
+    /// </returns>
     [HttpPut]
-    [CustomAuthorize(["Admin", "Developer"])]
-    public ActionResult<bool> UpdateAssignment([FromBody] AssignmentDTOUpdate assignmetDTO)
+    [CustomAuthorize]
+    public ActionResult<bool> UpdateAssignment([FromBody] AssignmentUpdateDto assignmetUpdateDto)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid assignment");
 
-            bool res = service.UpdateAssignment(assignmetDTO);
+            bool res = service.UpdateAssignment(assignmetUpdateDto);
 
             if (!res) return BadRequest("Assignment not updated");
 
@@ -71,12 +76,14 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
     
     /// <summary>
-    /// Endpoint to get all assignments
+    /// Retrieves all assignments.
     /// </summary>
-    /// <returns></returns>
-
+    /// <returns>
+    /// Returns HTTP 200 with a list of all assignments.
+    /// Returns HTTP 400 if an error occurs while retrieving the assignments.
+    /// </returns>
     [HttpGet]
-    [CustomAuthorize(["*"])]
+    [CustomAuthorize]
     public ActionResult<List<Assignment>> GetAssignments()
     {
         try
@@ -94,12 +101,15 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
 
     /// <summary>
-    /// Endpoint to get assignment by id
+    /// Retrieves a specific assignment by its ID.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The ID of the assignment to retrieve.</param>
+    /// <returns>
+    /// Returns HTTP 200 with the details of the assignment corresponding to the provided ID.
+    /// Returns HTTP 400 if an error occurs or if the ID is invalid.
+    /// </returns>
     [HttpGet("{id}")]
-    [CustomAuthorize(["*"])]
+    [CustomAuthorize]
     public ActionResult<Assignment> GetAssignmentById([FromRoute] int id)
     {
         try
@@ -117,13 +127,15 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
     
     /// <summary>
-    /// Endpoint to get assignments by teams
+    /// Retrieves assignments associated with specific teams.
     /// </summary>
-    /// <param name="idTeams"></param>
-    /// <returns></returns>
-
+    /// <param name="idTeams">An array of team IDs whose assignments should be retrieved.</param>
+    /// <returns>
+    /// Returns HTTP 200 with a list of assignments associated with the specified teams.
+    /// Returns HTTP 400 if an error occurs while retrieving the assignments.
+    /// </returns>
     [HttpGet("get-assignments-by-teams")]
-    [CustomAuthorize(["*"])]
+    [CustomAuthorize]
     public ActionResult<List<Assignment>> GetAssignmentsTeams(int[] idTeams)
     {
         try
@@ -139,13 +151,15 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     }
     
     /// <summary>
-    /// Endpoint to get assignments by users
+    /// Retrieves assignments associated with specific users.
     /// </summary>
-    /// <param name="idUsers"></param>
-    /// <returns></returns>
-    
+    /// <param name="idUsers">An array of user IDs whose assignments should be retrieved.</param>
+    /// <returns>
+    /// Returns HTTP 200 with a list of assignments associated with the specified users.
+    /// Returns HTTP 400 if an error occurs while retrieving the assignments.
+    /// </returns>
     [HttpGet("get-assignments-by-users")]
-    [CustomAuthorize(["*"])]
+    [CustomAuthorize]
     public ActionResult<List<Assignment>> GetAssignmentsByUser(int[] idUsers)
     {
         try

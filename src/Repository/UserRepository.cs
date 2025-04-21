@@ -6,19 +6,12 @@ using TaskManagerBackEnd.Connection;
 
 namespace TaskManagerBackEnd.Repository;
 
-public class UserRepository : IUserRepository
+public class UserRepository(ConnectionDb connection) : IUserRepository
 {
-    private readonly ConnectionDb _connection;
-
-    public UserRepository(ConnectionDb connection)
-    {
-        _connection = connection;
-    }
-
     public bool AddMember(User user)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        int res = connection.Execute(@"
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        int res = connection1.Execute(@"
                                      INSERT INTO tasks.user (email, password, post, datecreation, enabled, name, salt, idteam)
                                      VALUES (@Email, @Password, @Post, @DateCreation, @Enabled, @Name, @Salt, @IdTeam)
                                      ",
@@ -27,14 +20,14 @@ public class UserRepository : IUserRepository
                 user.Email, user.Password, user.Post, DateCreation = DateTime.Today, user.Enabled,
                 user.Name, user.Salt, user.IdTeam
             });
-        _connection.Dispose();
+        connection.Dispose();
         return res > 0;
     }
 
     public bool UpdateMember(User user)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        int res = connection.Execute(@"
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        int res = connection1.Execute(@"
                                      UPDATE tasks.user
                                      SET email = @Email, post = @Post, enabled = @Enabled, name = @Name, idteam = @IdTeam
                                      WHERE iduser = @IdUser
@@ -42,22 +35,22 @@ public class UserRepository : IUserRepository
         {
             user.Email, user.Post, user.Enabled, user.Name, user.IdTeam, user.IdUser
         });
-        _connection.Dispose();
+        connection.Dispose();
         return res > 0;
     }
 
     public bool DeleteUser(int id)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        int res = connection.Execute(@"DELETE FROM tasks.user WHERE iduser = @IdUser", new { IdUser = id });
-        _connection.Dispose();
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        int res = connection1.Execute(@"DELETE FROM tasks.user WHERE iduser = @IdUser", new { IdUser = id });
+        connection.Dispose();
         return res > 0;
     }
 
     public User? GetUserById(int id)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        User? user = connection.QueryFirstOrDefault<User>(@"
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        User? user = connection1.QueryFirstOrDefault<User>(@"
                                      SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, idteam as IdTeam
                                      FROM tasks.user
                                      WHERE iduser = @IdUser
@@ -67,8 +60,8 @@ public class UserRepository : IUserRepository
 
     public User GetUserByEmail(string email)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        User? user = connection.QueryFirstOrDefault<User>(@"
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        User? user = connection1.QueryFirstOrDefault<User>(@"
                                      SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, idteam as IdTeam
                                      FROM tasks.user
                                      WHERE email = @Email
@@ -78,18 +71,24 @@ public class UserRepository : IUserRepository
 
     public bool UpdatePassword(int idUser, string newPassword, string salt)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        int res = connection.Execute("UPDATE tasks.user SET password = @Password, salt = @Salt WHERE iduser = @IdUser",
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        int res = connection1.Execute("UPDATE tasks.user SET password = @Password, salt = @Salt WHERE iduser = @IdUser",
             new { Password = newPassword, IdUser = idUser, Salt = salt });
         return res > 0;
     }
 
     public List<User> GetUserByTeamId(int idTeam)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        return connection.Query<User>(@"
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        return connection1.Query<User>(@"
                                      SELECT * FROM tasks.user
                                      WHERE idteam = @IdTeam
                                      ", new { IdTeam = idTeam }).ToList();
+    }
+
+    public List<User> GetUsers()
+    {
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        return connection1.Query<User>(@"SELECT * FROM tasks.user").ToList();
     }
 }

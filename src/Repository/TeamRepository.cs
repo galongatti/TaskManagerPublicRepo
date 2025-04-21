@@ -5,20 +5,13 @@ using TaskManagerBackEnd.Model;
 
 namespace TaskManagerBackEnd.Repository;
 
-public class TeamRepository : ITeamRepository
+public class TeamRepository(ConnectionDb connection) : ITeamRepository
 {
-    private readonly ConnectionDb _connection;
-
-    public TeamRepository(ConnectionDb connection)
-    {
-        _connection = connection;
-    }
-
     public bool CreateTeam(Team team)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
+        using NpgsqlConnection connection1 = connection.OpenConnection();
 
-        int res = connection.Execute(@"
+        int res = connection1.Execute(@"
                 INSERT INTO tasks.team(name, datecreation, enabled) values (@Name, @DateCreation, @Enabled);
         ", new
         {
@@ -30,8 +23,8 @@ public class TeamRepository : ITeamRepository
 
     public Team? GetTeamByName(string name)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        Team? res = connection.QueryFirstOrDefault<Team>(
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        Team? res = connection1.QueryFirstOrDefault<Team>(
             @"SELECT idteam, name, datecreation, enabled 
                     FROM tasks.team WHERE name = @Name",
             new { Name = name });
@@ -41,8 +34,8 @@ public class TeamRepository : ITeamRepository
 
     public Team? GetTeamById(int idTeam)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        Team? res = connection.QueryFirstOrDefault<Team>(
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        Team? res = connection1.QueryFirstOrDefault<Team>(
             @"SELECT idteam, name, datecreation, enabled 
                     FROM tasks.team WHERE idteam = @IdTeam",
             new { IdTeam = idTeam });
@@ -52,16 +45,16 @@ public class TeamRepository : ITeamRepository
 
     public bool DeleteTeam(int idTeam)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        int res = connection.Execute(@"DELETE FROM tasks.team WHERE idteam = @IdTeam", new { IdTeam = idTeam });
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        int res = connection1.Execute(@"DELETE FROM tasks.team WHERE idteam = @IdTeam", new { IdTeam = idTeam });
         return res > 0;
     }
 
     public bool UpdateTeam(Team team)
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
+        using NpgsqlConnection connection1 = connection.OpenConnection();
 
-        int res = connection.Execute(@"
+        int res = connection1.Execute(@"
                 UPDATE tasks.team
                 SET name = @Name, enabled = @Enabled
                 WHERE idteam = @IdTeam;
@@ -75,7 +68,7 @@ public class TeamRepository : ITeamRepository
 
     public List<Team> GetTeams()
     {
-        using NpgsqlConnection connection = _connection.OpenConnection();
-        return connection.Query<Team>(@"SELECT * FROM tasks.team").ToList();
+        using NpgsqlConnection connection1 = connection.OpenConnection();
+        return connection1.Query<Team>(@"SELECT * FROM tasks.team").ToList();
     }
 }

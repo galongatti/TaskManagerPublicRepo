@@ -9,13 +9,6 @@ namespace TaskManagerBackEnd.Authorize;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
-    public string[] Roles { get; set; }
-
-    public CustomAuthorizeAttribute(string[]? roles)
-    {
-        Roles = roles;
-    }
-
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         bool allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
@@ -44,13 +37,6 @@ public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
         if (user == null)
         {
             SetResultUnauthorized(context);
-        }
-        else
-        {
-            bool isAllowed = (Array.Find(Roles, r => r == user.Post) != null) || (Array.Find(Roles, r => r == "*") != null);
-
-            if (!isAllowed)
-                SetResultUnauthorized(context);
         }
     }
     private void SetResultUnauthorized(AuthorizationFilterContext context)

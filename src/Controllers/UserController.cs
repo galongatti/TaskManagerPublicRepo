@@ -1,9 +1,11 @@
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using src.TaskManagerBackEnd;
 using TaskManagerBackEnd.Authorize;
 using TaskManagerBackEnd.Config;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Service;
 
 namespace TaskManagerBackEnd.Controllers;
@@ -25,7 +27,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
     /// <param name="user"></param>
     /// <returns></returns>
     [HttpPost]
-    [CustomAuthorize(["Admin"])]
+    [CustomAuthorize]
     public ActionResult<bool> CreateUser([FromBody] UserInsertDTO user)
     {
         try
@@ -52,7 +54,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
     /// <returns></returns>
 
     [HttpPut]
-    [CustomAuthorize(["Admin"])]
+    [CustomAuthorize]
     public ActionResult<bool> UpdateUser([FromBody] UserUpdateDto user)
     {
         try
@@ -79,7 +81,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
     /// <returns></returns>
 
     [HttpPut("update-password")]
-    [CustomAuthorize(["*"])]
+    [CustomAuthorize]
     public ActionResult<bool> UpdatePassword([FromBody] UserUpdatePasswordDto user)
     {
         try
@@ -105,7 +107,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
     /// <param name="idUser"></param>
     /// <returns></returns>
     [HttpDelete("{idUser}")]
-    [CustomAuthorize(["Admin"])]
+    [CustomAuthorize]
     public ActionResult<bool> DeleteUser(int idUser)
     {
         try
@@ -149,6 +151,54 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
         {
             logger.LogError(e, e.Message);
             return BadRequest("Something went wrong");
+        }
+    }
+    
+    /// <summary>
+    /// Endpoint to get a user by id
+    /// </summary>
+    /// <param name="idUser"></param>
+    /// <returns></returns>
+
+    [HttpGet("{idUser}")]
+    [CustomAuthorize]
+    public ActionResult<UserGetDto> GetUser(int idUser)
+    {
+        try
+        {
+            if (ModelState.IsValid == false) return BadRequest("Invalid member");
+
+            User? res = userService.GetUserById(idUser, true);
+
+            if (res is null) return BadRequest("Member not found");
+
+            return Ok(res.MapToGetDto());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Endpoint to get all users
+    /// </summary>
+    /// <returns>List of users</returns>
+    [HttpGet]
+    [CustomAuthorize]
+    public ActionResult<List<UserGetDto>> GetUsers()
+    {
+        try
+        {
+            List<User> res = userService.GetUsers(true);
+            List<UserGetDto> userDtos = res.Select(user => user.MapToGetDto()).ToList();
+            return Ok(userDtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }
