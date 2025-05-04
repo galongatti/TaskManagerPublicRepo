@@ -139,7 +139,7 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     /// </returns>
     [HttpGet("get-assignments-by-teams")]
     [CustomAuthorize]
-    public ActionResult<List<Assignment>> GetAssignmentsTeams(int[] idTeams)
+    public ActionResult<List<Assignment>> GetAssignmentsTeams([FromQuery] int[] idTeams)
     {
         try
         {
@@ -164,7 +164,7 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     /// </returns>
     [HttpGet("get-assignments-by-users")]
     [CustomAuthorize]
-    public ActionResult<List<Assignment>> GetAssignmentsByUser(int[] idUsers)
+    public ActionResult<List<Assignment>> GetAssignmentsByUser([FromQuery] int[] idUsers)
     {
         try
         {
