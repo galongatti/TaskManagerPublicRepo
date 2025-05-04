@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagerBackEnd.Authorize;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
 
@@ -79,8 +80,9 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
         try
         {
             List<Team> teams = teamService.GetTeams();
+            List<TeamDto> teamDtos = teams.Select(x => x.MapToGetDto()).ToList();
 
-            return Ok(teams);
+            return Ok(teamDtos);
         }
         catch (Exception e)
         {
@@ -94,10 +96,9 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
     /// </summary>
     /// <param name="idTeam"></param>
     /// <returns></returns>
-    
     [HttpDelete("{idTeam}")]
     [CustomAuthorize]
-    public ActionResult<List<Team>> DeleteTeam(int idTeam)
+    public ActionResult<bool> DeleteTeam(int idTeam)
     {
         try
         {

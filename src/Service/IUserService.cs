@@ -17,7 +17,7 @@ public interface IUserService
 
     public bool UpdateUser(UserUpdateDto user);
     public bool DeleteUser(int id);
-    public User? GetUserById(int id, bool includeTeam = false);
+    public User? GetUserById(int id);
     public User? GetUserByEmail(string email);
     
     public bool UpdatePassword(UserUpdatePasswordDto user);

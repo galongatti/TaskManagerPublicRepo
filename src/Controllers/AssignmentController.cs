@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagerBackEnd.Authorize;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
 
@@ -20,24 +20,25 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     /// <summary>
     /// Creates a new assignment.
     /// </summary>
-    /// <param name="assignmentInsertDto">The data transfer object containing the details of the assignment to be created.</param>
+    /// <param name="assignmentPostDto">The data transfer object containing the details of the assignment to be created.</param>
     /// <returns>
     /// Returns HTTP 200 with the ID of the created assignment if successful.
     /// Returns HTTP 400 if the assignment is not created or if the input data is invalid.
     /// </returns>
     [HttpPost]
     [CustomAuthorize]
-    public ActionResult<bool> CreateAssignment([FromBody] AssignmentInsertDto assignmentInsertDto)
+    public ActionResult<bool> CreateAssignment([FromBody] AssignmentPostDto assignmentPostDto)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid assignment");
 
-            int? res = service.CreateAssignment(assignmentInsertDto);
-
+            Assignment? res = service.CreateAssignment(assignmentPostDto);
+            
             if(res is null) return BadRequest("Assignment not created");
-
-            return Ok(res);
+            
+            AssignmentDto assignmentDto = res.MapModelToDto();
+            return Ok(assignmentDto);
         }
         catch (Exception e)
         {
@@ -49,24 +50,25 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     /// <summary>
     /// Updates an existing assignment.
     /// </summary>
-    /// <param name="assignmetUpdateDto">The data transfer object containing the updated details of the assignment.</param>
+    /// <param name="assignmetPutDto">The data transfer object containing the updated details of the assignment.</param>
     /// <returns>
     /// Returns HTTP 200 if the assignment is successfully updated.
     /// Returns HTTP 400 if the assignment is not updated or if the input data is invalid.
     /// </returns>
     [HttpPut]
     [CustomAuthorize]
-    public ActionResult<bool> UpdateAssignment([FromBody] AssignmentUpdateDto assignmetUpdateDto)
+    public ActionResult<AssignmentDto> UpdateAssignment([FromBody] AssignmentPutDto assignmetPutDto)
     {
         try
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid assignment");
 
-            bool res = service.UpdateAssignment(assignmetUpdateDto);
+            Assignment? res = service.UpdateAssignment(assignmetPutDto);
 
-            if (!res) return BadRequest("Assignment not updated");
+            if (res is null) return BadRequest("Assignment not updated");
+            AssignmentDto assignmentDto = res.MapModelToDto();
 
-            return Ok(res);
+            return Ok(assignmentDto);
         }
         catch (Exception e)
         {
@@ -90,8 +92,8 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
         {
             if(ModelState.IsValid == false) return BadRequest("Invalid assignment");
             List<Assignment> res = service.GetAssignments();
-            
-            return Ok(res); 
+            List<AssignmentDto> assignmentDto = res.Select(a => a.MapModelToDto()).ToList();
+            return Ok(assignmentDto); 
         }
         catch (Exception e)
         {
@@ -116,8 +118,9 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
         {
             if(ModelState.IsValid == false) return BadRequest("Invalid assignment");
             Assignment? res = service.GetAssignment(id);
+            AssignmentDto assignmentDto = (res ?? throw new Exception("Assignment not found")).MapModelToDto();
             
-            return Ok(res); 
+            return Ok(assignmentDto); 
         }
         catch (Exception e)
         {
@@ -136,12 +139,13 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     /// </returns>
     [HttpGet("get-assignments-by-teams")]
     [CustomAuthorize]
-    public ActionResult<List<Assignment>> GetAssignmentsTeams(int[] idTeams)
+    public ActionResult<List<Assignment>> GetAssignmentsTeams([FromQuery] int[] idTeams)
     {
         try
         {
             List<Assignment> res = service.GetAssignmentsByTeamsId(idTeams);
-            return Ok(res);
+            List<AssignmentDto> assignmentDto = res.Select(a => a.MapModelToDto()).ToList();
+            return Ok(assignmentDto);
         }
         catch (Exception e)
         {
@@ -160,12 +164,13 @@ public class AssignmentController(IAssignmentService service, ILogger<Assignment
     /// </returns>
     [HttpGet("get-assignments-by-users")]
     [CustomAuthorize]
-    public ActionResult<List<Assignment>> GetAssignmentsByUser(int[] idUsers)
+    public ActionResult<List<Assignment>> GetAssignmentsByUser([FromQuery] int[] idUsers)
     {
         try
         {
             List<Assignment> res = service.GetAssignmentsByUserId(idUsers);
-            return Ok(res);
+            List<AssignmentDto> assignmentDto = res.Select(a => a.MapModelToDto()).ToList();
+            return Ok(assignmentDto);
         }
         catch (Exception e)
         {
