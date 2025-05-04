@@ -5,7 +5,7 @@ using TaskManagerBackEnd.Enum;
 
 namespace TaskManagerBackEnd.DTO;
 
-public class AssignmentInsertDto
+public struct AssignmentPostDto
 {
     [Required] public string Title { get; set; }
     [Required] public string Description { get; set; }
@@ -13,18 +13,17 @@ public class AssignmentInsertDto
     [Required] public DateTime Deadline { get; set; }
 
     [Required]
-    [AllowedValues(1, int.MaxValue)]
     public int? IdUser { get; set; }
 
-    [Required] [AllowedValues(1, 2, 3, 4)] 
+    [Required] 
+    [AllowedValues(1, 2, 3, 4)] 
     public StatusAssignmet Status { get; set; }
 }
 
-public class AssignmentUpdateDto
+public struct AssignmentPutDto
 {
     
     [Required]
-    [AllowedValues(1, int.MaxValue)]
     public int IdTask { get; set; }
     
     [Required]
@@ -37,18 +36,17 @@ public class AssignmentUpdateDto
     public DateTime Deadline { get; set; }
     
     [Required]
-    [AllowedValues(1, int.MaxValue)]
     public int? IdUser { get; set; }
     
-    [Required] [AllowedValues(1, 2, 3, 4)] 
+    [Required] 
+    [AllowedValues(StatusAssignmet.Pending, StatusAssignmet.InProgress, StatusAssignmet.Canceled, StatusAssignmet.Concluded)] 
     public StatusAssignmet Status { get; set; }
     
     [Required]
     public DateTime? DateConclusion { get; set; }
 }
 
-
-public class AssignmentGetDto
+public struct AssignmentDto
 {
     public int IdTask { get; set; }
     public string Title { get; set; }

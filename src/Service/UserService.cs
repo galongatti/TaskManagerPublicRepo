@@ -1,15 +1,22 @@
 using src.TaskManagerBackEnd;
 using src.TaskManagerBackEnd.Repository;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Model;
 
 namespace TaskManagerBackEnd.Service;
 
-public class UserService(IUserRepository repository, IConfiguration configuration, IAssignmentService assignmentService, IServiceProvider serviceProvider) : IUserService
+public class UserService(
+    IUserRepository repository,
+    IConfiguration configuration,
+    IAssignmentService assignmentService,
+    IServiceProvider serviceProvider) : IUserService
 {
     private const int Iteration = 3;
+
     private readonly string? _pepper = configuration["HashPepper"] ??
                                        throw new ArgumentNullException(nameof(configuration), "Pepper not found");
+
     /// <summary>
     ///     Adds a new member to the repository.
     /// </summary>
@@ -24,19 +31,17 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
         if (userExist is not null)
             throw new Exception("User already exists");
 
+        if (string.IsNullOrWhiteSpace(userDto.Password))
+            throw new ArgumentException("Password is required");
+
         string salt = HashPassword.GenerateSalt();
 
-        User user = new()
-        {
-            Email = userDto.Email,
-            Post = userDto.Post,
-            DateCreation = DateTime.Today,
-            Enabled = userDto.Enabled,
-            Name = userDto.Name,
-            Salt = salt,
-            Password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration),
-            IdTeam = userDto.IdTeam
-        };
+        string password = HashPassword.ComputeHash(userDto.Password, salt, _pepper!, Iteration);
+
+        User user = userDto.MapToModel();
+        user.Salt = salt;
+        user.Password = password;
+
         return repository.AddMember(user);
     }
 
@@ -46,15 +51,7 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
 
         if (userAux is null) throw new Exception("User does not exists");
 
-        User user = new()
-        {
-            IdUser = userDto.IdUser,
-            Email = userDto.Email,
-            Post = userDto.Post,
-            Enabled = userDto.Enabled,
-            Name = userDto.Name,
-            IdTeam = userDto.IdTeam
-        };
+        User user = userDto.MapToModel();
 
         return repository.UpdateMember(user);
     }
@@ -63,22 +60,14 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
     {
         int[] idUser = { id };
         List<Assignment> assignments = assignmentService.GetAssignmentsByUserId(idUser);
-        if(assignments.Any()) throw new Exception("The user has assignments found.");
-        
+        if (assignments.Any()) throw new Exception("The user has assignments found.");
+
         return repository.DeleteUser(id);
     }
 
-    public User? GetUserById(int id, bool includeTeam = false)
+    public User? GetUserById(int id)
     {
-        User user = repository.GetUserById(id);
-        if (user is null) throw new Exception("User not found");
-        if (!includeTeam) return user;
-        
-        ITeamService teamService = serviceProvider.GetRequiredService<ITeamService>() ??
-                                   throw new ArgumentNullException(nameof(ITeamService), "TeamService not found");
-        
-        Team team = teamService.GetTeamById(user.IdTeam.Value);
-        user.Team = team;
+        User? user = repository.GetUserById(id);
         return user;
     }
 
@@ -117,30 +106,7 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
     public List<User> GetUsers(bool includeTeam = false)
     {
         List<User> users = repository.GetUsers();
-        
-        if (!includeTeam) return users;
-        
-        ITeamService teamService = serviceProvider.GetRequiredService<ITeamService>() ??
-                                   throw new ArgumentNullException(nameof(ITeamService), "TeamService not found");
-        
-        List<Team> teams = teamService.GetTeams();
-        
-        List<User> usersTeams = (from u in users
-                                join t in teams on u.IdTeam equals t.IdTeam
-                                select new User
-                                {
-                                    IdUser = u.IdUser,
-                                    Email = u.Email,
-                                    Post = u.Post,
-                                    DateCreation = u.DateCreation,
-                                    Enabled = u.Enabled,
-                                    Name = u.Name,
-                                    Salt = u.Salt,
-                                    Password = u.Password,
-                                    IdTeam = t.IdTeam,
-                                    Team = t
-                                }).ToList();
-        return usersTeams;
+        return users;
     }
 
     /// <summary>
@@ -152,25 +118,12 @@ public class UserService(IUserRepository repository, IConfiguration configuratio
     /// </returns>
     public bool AddUserSeed(UserInsertDTO userDto)
     {
-        User userExist = GetUserByEmail(userDto.Email);
-
-        if (userExist is not null)
-            return false;
-
         string salt = HashPassword.GenerateSalt();
+        string password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration);
 
-        User user = new()
-        {
-            Email = userDto.Email,
-            Post = userDto.Post,
-            DateCreation = DateTime.Today,
-            Enabled = userDto.Enabled,
-            Name = userDto.Name,
-            Salt = salt,
-            Password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration),
-            IdTeam = userDto.IdTeam
-        };
-
+        User user = userDto.MapToModel();
+        user.Salt = salt;
+        user.Password = password;
 
         return repository.AddMember(user);
     }

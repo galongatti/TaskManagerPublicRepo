@@ -5,8 +5,8 @@ namespace TaskManagerBackEnd.Service;
 
 public interface IAssignmentService
 {
-    int? CreateAssignment(AssignmentInsertDto task);
-    bool UpdateAssignment(AssignmentUpdateDto task);
+    Assignment? CreateAssignment(AssignmentPostDto task);
+    Assignment? UpdateAssignment(AssignmentPutDto task);
     bool DeleteAssignment(int taskId);
     Assignment? GetAssignment(int taskId);
     List<Assignment> GetAssignments();

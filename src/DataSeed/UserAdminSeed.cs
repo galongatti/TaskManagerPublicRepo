@@ -1,3 +1,4 @@
+using src.TaskManagerBackEnd;
 using TaskManagerBackEnd.DTO;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
@@ -15,6 +16,7 @@ public class UserAdminSeed(IServiceScope serviceScope)
 
         Team team = teamService.GetTeamByName(AdminTeam);
         
+        
         if(team == null)
             throw new Exception(AdminTeam);
 
@@ -27,8 +29,11 @@ public class UserAdminSeed(IServiceScope serviceScope)
             Enabled = true,
             IdTeam = team.IdTeam
         };
+
+        User? user = userService.GetUserByEmail(userDto.Email);
         
-        userService.AddUserSeed(userDto);
+        if(user == null)
+            userService.AddUserSeed(userDto);
     }
 
     public void SeedTeamAdmin()

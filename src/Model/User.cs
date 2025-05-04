@@ -47,11 +47,6 @@ public class User
     public string Salt { get; set; }
     
     /// <summary>
-    /// Gets or sets the id team to which the user belongs.
-    /// </summary>
-    public int? IdTeam { get; set; }
-    
-    /// <summary>
     /// Gets or sets the team object associated with the user.
     /// </summary>
     public Team? Team { get; set; }

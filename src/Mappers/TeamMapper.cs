@@ -6,13 +6,14 @@ namespace TaskManagerBackEnd.Mappers;
 public static class TeamMapper
 {
 
-    public static TeamGetDto MapToGetDto(this Team team)
+    public static TeamDto MapToGetDto(this Team team)
     {
-        return new TeamGetDto()
+        return new TeamDto()
         {
             Name = team.Name,
             IdTeam = team.IdTeam,
-            Enabled = team.Enabled
+            Enabled = team.Enabled,
+            DateCreation = team.DateCreation
         };
     }
     

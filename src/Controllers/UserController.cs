@@ -168,7 +168,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            User? res = userService.GetUserById(idUser, true);
+            User? res = userService.GetUserById(idUser);
 
             if (res is null) return BadRequest("Member not found");
 

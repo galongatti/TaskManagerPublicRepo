@@ -25,9 +25,11 @@ public class TeamUpdateDto
     public bool Enabled { get; set; }
 }
 
-public struct TeamGetDto
+public struct TeamDto
 {
     public int IdTeam { get; set; }
     public string Name { get; set; }
     public bool Enabled { get; set; }
+    
+    public DateTime DateCreation { get; set; }
 }

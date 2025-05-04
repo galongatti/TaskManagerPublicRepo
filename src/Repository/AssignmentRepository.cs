@@ -78,7 +78,7 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
         return connection.Query<Assignment>(@"
             SELECT idtask, title, description, datecreation, deadline, iduser, status, dateconclusion
             FROM tasks.task
-            WHERE iduser in @IdUser
+            WHERE iduser = ANY(SELECT iduser from tasks.user WHERE iduser = ANY(@IdUser))
             ", new
         {
             IdUser = usersId

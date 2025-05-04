@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Extensions;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Repository;
 
@@ -7,35 +8,23 @@ namespace TaskManagerBackEnd.Service;
 
 public class AssignmentService(IAssignmentRepository repository) : IAssignmentService
 {
-    public int? CreateAssignment(AssignmentInsertDto taskInsertDto)
+    public Assignment? CreateAssignment(AssignmentPostDto taskPostDto)
     {
-        Assignment assignment = new()
-        {
-            Title = taskInsertDto.Title,
-            Deadline = taskInsertDto.Deadline,
-            Description = taskInsertDto.Description,
-            Status = taskInsertDto.Status,
-            DateCreation = DateTime.Now,
-            IdUser = taskInsertDto.IdUser,
-        };
+        Assignment assignment = taskPostDto.MapPostToModel();
+        int? id = repository.CreateAssignment(assignment);
         
-        return repository.CreateAssignment(assignment);
+        if(id is null) throw new Exception("Assignment not created");
+
+        return GetAssignment(id.Value);
     }
 
-    public bool UpdateAssignment(AssignmentUpdateDto taskUpdateDto)
+    public Assignment? UpdateAssignment(AssignmentPutDto taskPutDto)
     {
-        Assignment assignment = new()
-        {
-            IdTask = taskUpdateDto.IdTask,
-            Title = taskUpdateDto.Title,
-            Deadline = taskUpdateDto.Deadline,
-            Description = taskUpdateDto.Description,
-            Status = taskUpdateDto.Status,
-            DateConclusion = taskUpdateDto.DateConclusion,
-            IdUser = taskUpdateDto.IdUser
-        };
-        
-        return repository.UpdateAssignment(assignment);
+        Assignment assignment = taskPutDto.MapPutToModel();
+        bool result = repository.UpdateAssignment(assignment);
+        if(result is false) throw new Exception("Assignment not updated");
+
+        return GetAssignment(assignment.IdTask);
     }
 
     public bool DeleteAssignment(int taskId)

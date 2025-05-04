@@ -68,6 +68,5 @@ public struct UserGetDto
     public string Name { get; set; }
     public string Post { get; set; }
     public bool Enabled { get; set; }
-    public int? IdTeam { get; set; }
-    public TeamGetDto? Team { get; set; }
+    public TeamDto? Team { get; set; }
 }
