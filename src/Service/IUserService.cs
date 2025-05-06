@@ -17,12 +17,12 @@ public interface IUserService
 
     public bool UpdateUser(UserUpdateDto user);
     public bool DeleteUser(int id);
-    public User? GetUserById(int id);
-    public User? GetUserByEmail(string email);
+    public src.TaskManagerBackEnd.UserService? GetUserById(int id);
+    public src.TaskManagerBackEnd.UserService? GetUserByEmail(string email);
     
     public bool UpdatePassword(UserUpdatePasswordDto user);
     public bool CheckPassword(UserLoginDto user);
-    public List<User> GetUserByTeamId(int idTeam);
-    public List<User> GetUsers(bool includeTeam = false);
+    public List<src.TaskManagerBackEnd.UserService> GetUserByTeamId(int idTeam);
+    public List<src.TaskManagerBackEnd.UserService> GetUsers(bool includeTeam = false);
 
 }

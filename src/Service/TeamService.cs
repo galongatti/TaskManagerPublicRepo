@@ -47,7 +47,7 @@ public class TeamService(ITeamRepository repository, IServiceProvider servicePro
         if(userService is null)
             throw new ArgumentNullException(nameof(UserService), "UserService not found");
         
-        List<User> users =  userService.GetUserByTeamId(idTeam);
+        List<src.TaskManagerBackEnd.UserService> users =  userService.GetUserByTeamId(idTeam);
         
         if(users.Any())
             throw new Exception("Team has users. You must change the team of the users before deleting the team");

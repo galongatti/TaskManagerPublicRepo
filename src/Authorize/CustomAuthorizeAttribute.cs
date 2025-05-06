@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using src.TaskManagerBackEnd;
 using TaskManagerBackEnd.Service;
+using UserService = src.TaskManagerBackEnd.UserService;
 
 namespace TaskManagerBackEnd.Authorize;
 
@@ -32,7 +33,7 @@ public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         IUserService? userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
 
-        User? user = userService.GetUserByEmail(email);
+        UserService? user = userService.GetUserByEmail(email);
 
         if (user == null)
         {

@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Extensions;
 using TaskManagerBackEnd.DTO;
+using TaskManagerBackEnd.Enum;
 using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Repository;
@@ -29,7 +30,15 @@ public class AssignmentService(IAssignmentRepository repository) : IAssignmentSe
 
     public bool DeleteAssignment(int taskId)
     {
-        throw new NotImplementedException();
+
+        Assignment assignment = GetAssignment(taskId);
+        
+        if (assignment is null) throw new Exception("Assignment not found");
+        
+        if(assignment.Status == StatusAssignmet.InProgress || assignment.Status == StatusAssignmet.Concluded) 
+            throw new Exception("Assignment must be pending or canceled to be deleted");
+
+        return repository.DeleteAssignment(taskId);
     }
 
     public Assignment? GetAssignment(int taskId)

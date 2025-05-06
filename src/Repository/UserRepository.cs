@@ -9,9 +9,9 @@ namespace TaskManagerBackEnd.Repository;
 
 public class UserRepository(ConnectionDb connection) : IUserRepository
 {
-    public bool AddMember(User user)
+    public bool AddMember(UserService userService)
     {
-        int? idTeam = user.Team?.IdTeam;
+        int? idTeam = userService.Team?.IdTeam;
 
         using NpgsqlConnection connection1 = connection.OpenConnection();
         int res = connection1.Execute(@"
@@ -20,16 +20,16 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
                                      ",
             new
             {
-                user.Email, user.Password, user.Post, DateCreation = DateTime.Today, user.Enabled,
-                user.Name, user.Salt, idTeam
+                userService.Email, userService.Password, userService.Post, DateCreation = DateTime.Today, userService.Enabled,
+                userService.Name, userService.Salt, idTeam
             });
         connection.Dispose();
         return res > 0;
     }
 
-    public bool UpdateMember(User user)
+    public bool UpdateMember(UserService userService)
     {
-        int? idTeam = user.Team?.IdTeam;
+        int? idTeam = userService.Team?.IdTeam;
 
         using NpgsqlConnection connection1 = connection.OpenConnection();
         int res = connection1.Execute(@"
@@ -38,7 +38,7 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
                                      WHERE iduser = @IdUser
                                      ", new
         {
-            user.Email, user.Post, user.Enabled, user.Name, idTeam, user.IdUser
+            userService.Email, userService.Post, userService.Enabled, userService.Name, idTeam, userService.IdUser
         });
         connection.Dispose();
         return res > 0;
@@ -51,7 +51,7 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
         return res > 0;
     }
 
-    public User? GetUserById(int id)
+    public UserService? GetUserById(int id)
     {
         using NpgsqlConnection connection1 = connection.OpenConnection();
 
@@ -62,7 +62,7 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
             FROM tasks.user u
             LEFT JOIN tasks.team t ON u.IdTeam = t.IdTeam
             WHERE u.IdUser = @IdUser";
-        User? user = connection1.Query<User, Team?, User>(sql, (u, t) =>
+        UserService? user = connection1.Query<UserService, Team?, UserService>(sql, (u, t) =>
         {
             u.Team = t is not null ?  new Team()
             {
@@ -76,10 +76,10 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
         return user;
     }
 
-    public User? GetUserByEmail(string email)
+    public UserService? GetUserByEmail(string email)
     {
         using NpgsqlConnection connection1 = connection.OpenConnection();
-        User? user = connection1.QueryFirstOrDefault<User>(@"
+        UserService? user = connection1.QueryFirstOrDefault<UserService>(@"
                                      SELECT iduser as IdUser, email as Email, password as Password, name as Name, post as Post, datecreation as DateCreation, enabled as Enabled, salt as Salt, idteam as IdTeam
                                      FROM tasks.user
                                      WHERE email = @Email
@@ -95,16 +95,16 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
         return res > 0;
     }
 
-    public List<User> GetUserByTeamId(int idTeam)
+    public List<UserService> GetUserByTeamId(int idTeam)
     {
         using NpgsqlConnection connection1 = connection.OpenConnection();
-        return connection1.Query<User>(@"
+        return connection1.Query<UserService>(@"
                                      SELECT * FROM tasks.user
                                      WHERE idteam = @IdTeam
                                      ", new { IdTeam = idTeam }).ToList();
     }
 
-    public List<User> GetUsers()
+    public List<UserService> GetUsers()
     {
         using NpgsqlConnection connection1 = connection.OpenConnection();
 
@@ -115,7 +115,7 @@ public class UserRepository(ConnectionDb connection) : IUserRepository
             FROM tasks.user u
             LEFT JOIN tasks.team t ON u.IdTeam = t.IdTeam
             WHERE u.IdUser = @IdUser";
-        List<User>? users = connection1.Query<User, Team?, User>(sql, (u, t) =>
+        List<UserService>? users = connection1.Query<UserService, Team?, UserService>(sql, (u, t) =>
         {
             u.Team = t is not null ?  new Team()
             {

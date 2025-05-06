@@ -11,7 +11,7 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
     {
         using NpgsqlConnection connection = connectionDb.OpenConnection();
 
-        int idtask = connection.Execute(@"
+        int idtask = connection.QueryFirstOrDefault<int>(@"
             INSERT INTO tasks.task(title, description, datecreation, deadline, iduser, status)
             values(@Title, @Description, @DateCreation, @Deadline, @IdUser, @Status)
             returning idtask;
@@ -48,12 +48,6 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
 
         return res > 0;
     }
-
-    public bool DeleteAssignment(int taskId)
-    {
-        throw new NotImplementedException();
-    }
-
     public Assignment? GetAssignment(int taskId)
     {
         using NpgsqlConnection connection = connectionDb.OpenConnection();
@@ -62,7 +56,6 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
             FROM tasks.task WHERE idtask = @IdTask
             ", new { IdTask = taskId }).FirstOrDefault();
     }
-
     public List<Assignment> GetAssignments()
     {
         using NpgsqlConnection connection = connectionDb.OpenConnection();
@@ -71,7 +64,6 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
             FROM tasks.task
             ").ToList();
     }
-
     public List<Assignment> GetAssignmentsByUserId(int[] usersId)
     {
         using NpgsqlConnection connection = connectionDb.OpenConnection();
@@ -84,8 +76,6 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
             IdUser = usersId
         }).ToList();
     }
-
-
     public List<Assignment> GetAssignmentsByTeamsId(int[] teamId)
     {
         using NpgsqlConnection connection = connectionDb.OpenConnection();
@@ -97,4 +87,13 @@ public class AssignmentRepository(ConnectionDb connectionDb) : IAssignmentReposi
             IdTeam = teamId
         }).ToList();
     }
+    public bool DeleteAssignment(int taskId)
+    {
+        using NpgsqlConnection connection = connectionDb.OpenConnection();
+        int res = connection.Execute(@"
+            DELETE FROM tasks.task WHERE idtask = @IdTask
+            ", new { IdTask = taskId });
+        return res > 0;
+    }
+    
 }

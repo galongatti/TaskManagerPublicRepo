@@ -5,7 +5,7 @@ namespace src.TaskManagerBackEnd;
 /// <summary>
 ///     Represents a user in the Task Manager system.
 /// </summary>
-public class User
+public class UserService
 {
     /// <summary>
     ///     Gets or sets the unique identifier for the user.

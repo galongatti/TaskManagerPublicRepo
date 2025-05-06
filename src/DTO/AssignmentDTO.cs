@@ -16,7 +16,6 @@ public struct AssignmentPostDto
     public int? IdUser { get; set; }
 
     [Required] 
-    [AllowedValues(1, 2, 3, 4)] 
     public StatusAssignmet Status { get; set; }
 }
 

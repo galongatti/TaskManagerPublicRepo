@@ -5,13 +5,14 @@ using src.TaskManagerBackEnd.Repository;
 using TaskManagerBackEnd.DTO;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
+using UserService = src.TaskManagerBackEnd.UserService;
 
 
 namespace TaskManagerBackEndTest
 {
-    public class UserTest
+    public class UserServiceTest
     {
-        private (UserService, Mock<IUserRepository>, Mock<IConfiguration>, Mock<IAssignmentService>) SetupUserService()
+        private (TaskManagerBackEnd.Service.UserService, Mock<IUserRepository>, Mock<IConfiguration>, Mock<IAssignmentService>) SetupUserService()
         {
             Mock<IUserRepository> mockRepository = new();
             Mock<IConfiguration> mockConfiguration = new();
@@ -19,14 +20,14 @@ namespace TaskManagerBackEndTest
             Mock<IServiceProvider> mockServiceProvider = new();
             mockConfiguration.Setup(config => config["HashPepper"]).Returns("testPepper");
 
-            UserService userService = new(mockRepository.Object, mockConfiguration.Object, mockAssignmentService.Object, mockServiceProvider.Object);
+            TaskManagerBackEnd.Service.UserService userService = new(mockRepository.Object, mockConfiguration.Object, mockAssignmentService.Object, mockServiceProvider.Object);
             return (userService, mockRepository, mockConfiguration, mockAssignmentService);
         }
         
         [Fact]
         public void TestUserCreation_UserDoesNotExist()
         {
-            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            (TaskManagerBackEnd.Service.UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
             //Creating a UserInsertDTO object with the data of the user to be created
             UserInsertDTO userDto = new()
@@ -40,10 +41,10 @@ namespace TaskManagerBackEndTest
             };
             
             //Mocking the GetMemberByEmail method to return null, simulating that the user does not exist
-            mockRepository.Setup(repo => repo.GetUserByEmail(userDto.Email)).Returns((User)null!);
+            mockRepository.Setup(repo => repo.GetUserByEmail(userDto.Email)).Returns((UserService)null!);
             
             //Mocking the AddMember method to return true, simulating that the user was successfully added
-            mockRepository.Setup(repo => repo.AddMember(It.IsAny<User>()
+            mockRepository.Setup(repo => repo.AddMember(It.IsAny<UserService>()
             )).Returns(true);
             
             //Calling the AddMember method from the UserService class
@@ -52,16 +53,16 @@ namespace TaskManagerBackEndTest
             //Asserting that the result is true
             Assert.True(result);
             mockRepository.Verify(repo => repo.GetUserByEmail(userDto.Email), Times.Once);
-            mockRepository.Verify(repo => repo.AddMember(It.Is<User>(u => u.Email == userDto.Email && u.Name == userDto.Name)), Times.Once);
+            mockRepository.Verify(repo => repo.AddMember(It.Is<UserService>(u => u.Email == userDto.Email && u.Name == userDto.Name)), Times.Once);
             
         }
 
         [Fact]
         public void TestUserCreation_UserExists()
         {
-            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            (TaskManagerBackEnd.Service.UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
-            mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(new User());
+            mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(new UserService());
             
             UserInsertDTO userDto = new()
             {
@@ -73,23 +74,23 @@ namespace TaskManagerBackEndTest
                 IdTeam = 1
             };
 
-            User existingUser = new()
+            UserService existingUserService = new()
             {
                 Email = "test@example.com"
             };
 
-            mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(existingUser);
+            mockRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).Returns(existingUserService);
 
             Exception exception = Assert.Throws<Exception>(() => userService.AddUser(userDto));
             Assert.Equal("User already exists", exception.Message);
             mockRepository.Verify(repo => repo.GetUserByEmail(It.IsAny<string>()), Times.Once);
-            mockRepository.Verify(repo => repo.AddMember(It.IsAny<User>()), Times.Never);
+            mockRepository.Verify(repo => repo.AddMember(It.IsAny<UserService>()), Times.Never);
         }
 
         [Fact]
         public void TestUserUpdate_UserExists()
         {
-            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            (TaskManagerBackEnd.Service.UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
             UserUpdateDto userDto = new()
             {
@@ -101,25 +102,25 @@ namespace TaskManagerBackEndTest
                 IdUser = 1
             };
             
-            mockRepository.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(new User());
+            mockRepository.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns(new UserService());
 
-            mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<User>())).Returns(true);
+            mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<UserService>())).Returns(true);
             
             bool result = userService.UpdateUser(userDto);
             
             Assert.True(result);
             
             mockRepository.Verify(repo => repo.GetUserById(It.IsAny<int>()), Times.Once);
-            mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<User>()), Times.Once);
+            mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<UserService>()), Times.Once);
         }
 
         [Fact]
         public void TestUpdate_UserDoesNotExist()
         {
-            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            (TaskManagerBackEnd.Service.UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
-            mockRepository.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns((User)null!);
-            mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<User>())).Returns(false);
+            mockRepository.Setup(repo => repo.GetUserById(It.IsAny<int>())).Returns((UserService)null!);
+            mockRepository.Setup(repo => repo.UpdateMember(It.IsAny<UserService>())).Returns(false);
 
             UserUpdateDto userDto = new()
             {
@@ -135,13 +136,13 @@ namespace TaskManagerBackEndTest
             Assert.Equal("User does not exists", exception.Message);
             
             mockRepository.Verify(repo => repo.GetUserById(It.IsAny<int>()), Times.Once);
-            mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<User>()), Times.Never);
+            mockRepository.Verify(repo => repo.UpdateMember(It.IsAny<UserService>()), Times.Never);
         }
 
         [Fact]
         public void TestUserDelete_UserHasAssignment()
         {
-            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            (TaskManagerBackEnd.Service.UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
 
             mockAssignmentService.Setup(service => service.GetAssignmentsByUserId(It.IsAny<int[]>())).Returns([new Assignment(), new Assignment()]);
             
@@ -156,7 +157,7 @@ namespace TaskManagerBackEndTest
         [Fact]
         public void TestUserDelete_UserDoesNoHasAssignment()
         {
-            (UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
+            (TaskManagerBackEnd.Service.UserService userService, Mock<IUserRepository> mockRepository, Mock<IConfiguration> mockConfiguration, Mock<IAssignmentService> mockAssignmentService) = SetupUserService();
             
             mockAssignmentService.Setup(service => service.GetAssignmentsByUserId(It.IsAny<int[]>())).Returns(new List<Assignment>());
 
