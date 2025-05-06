@@ -2,6 +2,7 @@ using src.TaskManagerBackEnd;
 using TaskManagerBackEnd.DTO;
 using TaskManagerBackEnd.Model;
 using TaskManagerBackEnd.Service;
+using UserService = src.TaskManagerBackEnd.UserService;
 
 namespace TaskManagerBackEnd.DataSeed;
 
@@ -30,7 +31,7 @@ public class UserAdminSeed(IServiceScope serviceScope)
             IdTeam = team.IdTeam
         };
 
-        User? user = userService.GetUserByEmail(userDto.Email);
+        UserService? user = userService.GetUserByEmail(userDto.Email);
         
         if(user == null)
             userService.AddUserSeed(userDto);

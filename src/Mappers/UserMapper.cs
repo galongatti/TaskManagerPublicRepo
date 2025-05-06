@@ -6,22 +6,22 @@ namespace TaskManagerBackEnd.Mappers;
 
 public static class UserMapper
 {
-    public static UserGetDto MapToGetDto(this User user)
+    public static UserGetDto MapToGetDto(this UserService userService)
     {
         return new UserGetDto
         {
-            Name = user.Name,
-            Email = user.Email,
-            IdUser = user.IdUser,
-            Post = user.Post,
-            Enabled = user.Enabled,
-            Team = user.Team is not null ? user.Team.MapToGetDto() : null
+            Name = userService.Name,
+            Email = userService.Email,
+            IdUser = userService.IdUser,
+            Post = userService.Post,
+            Enabled = userService.Enabled,
+            Team = userService.Team is not null ? userService.Team.MapToGetDto() : null
         };
     }
 
-    public static User MapToModel(this UserInsertDTO userDto)
+    public static UserService MapToModel(this UserInsertDTO userDto)
     {
-        return new User
+        return new UserService
         {
             Email = userDto.Email,
             Post = userDto.Post,
@@ -32,9 +32,9 @@ public static class UserMapper
         };
     }
     
-    public static User MapToModel(this UserUpdateDto userDto)
+    public static UserService MapToModel(this UserUpdateDto userDto)
     {
-        return new User
+        return new UserService
         {
             Email = userDto.Email,
             Post = userDto.Post,

@@ -7,6 +7,7 @@ using TaskManagerBackEnd.Config;
 using TaskManagerBackEnd.DTO;
 using TaskManagerBackEnd.Mappers;
 using TaskManagerBackEnd.Service;
+using UserService = src.TaskManagerBackEnd.UserService;
 
 namespace TaskManagerBackEnd.Controllers;
 
@@ -168,7 +169,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
         {
             if (ModelState.IsValid == false) return BadRequest("Invalid member");
 
-            User? res = userService.GetUserById(idUser);
+            UserService? res = userService.GetUserById(idUser);
 
             if (res is null) return BadRequest("Member not found");
 
@@ -191,7 +192,7 @@ public class UserController(ILogger<UserController> logger, IUserService userSer
     {
         try
         {
-            List<User> res = userService.GetUsers(true);
+            List<UserService> res = userService.GetUsers(true);
             List<UserGetDto> userDtos = res.Select(user => user.MapToGetDto()).ToList();
             return Ok(userDtos);
         }

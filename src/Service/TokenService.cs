@@ -11,7 +11,7 @@ public class TokenService(IConfiguration config, IUserService userService) : ITo
 {
     public string GenerateToken(string email)
     {
-        User? user = userService.GetUserByEmail(email);
+        src.TaskManagerBackEnd.UserService? user = userService.GetUserByEmail(email);
         
         if (user is null)
             throw new Exception("User not found");
@@ -65,12 +65,12 @@ public class TokenService(IConfiguration config, IUserService userService) : ITo
         }
     }
 
-    public ClaimsIdentity GenerateClaimsIdentity(User user)
+    public ClaimsIdentity GenerateClaimsIdentity(src.TaskManagerBackEnd.UserService userService)
     {
         ClaimsIdentity ci = new();
-        ci.AddClaim(new Claim(ClaimTypes.Name, user.Name));
-        ci.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-        ci.AddClaim(new Claim(ClaimTypes.Role, user.Post));
+        ci.AddClaim(new Claim(ClaimTypes.Name, userService.Name));
+        ci.AddClaim(new Claim(ClaimTypes.Email, userService.Email));
+        ci.AddClaim(new Claim(ClaimTypes.Role, userService.Post));
         return ci;
     }
 }

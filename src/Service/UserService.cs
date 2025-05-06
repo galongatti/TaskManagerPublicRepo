@@ -26,9 +26,9 @@ public class UserService(
     /// </returns>
     public bool AddUser(UserInsertDTO userDto)
     {
-        User userExist = GetUserByEmail(userDto.Email);
+        src.TaskManagerBackEnd.UserService userServiceExist = GetUserByEmail(userDto.Email);
 
-        if (userExist is not null)
+        if (userServiceExist is not null)
             throw new Exception("User already exists");
 
         if (string.IsNullOrWhiteSpace(userDto.Password))
@@ -38,22 +38,22 @@ public class UserService(
 
         string password = HashPassword.ComputeHash(userDto.Password, salt, _pepper!, Iteration);
 
-        User user = userDto.MapToModel();
-        user.Salt = salt;
-        user.Password = password;
+        src.TaskManagerBackEnd.UserService userService = userDto.MapToModel();
+        userService.Salt = salt;
+        userService.Password = password;
 
-        return repository.AddMember(user);
+        return repository.AddMember(userService);
     }
 
     public bool UpdateUser(UserUpdateDto userDto)
     {
-        User? userAux = GetUserById(userDto.IdUser);
+        src.TaskManagerBackEnd.UserService? userAux = GetUserById(userDto.IdUser);
 
         if (userAux is null) throw new Exception("User does not exists");
 
-        User user = userDto.MapToModel();
+        src.TaskManagerBackEnd.UserService userService = userDto.MapToModel();
 
-        return repository.UpdateMember(user);
+        return repository.UpdateMember(userService);
     }
 
     public bool DeleteUser(int id)
@@ -65,13 +65,13 @@ public class UserService(
         return repository.DeleteUser(id);
     }
 
-    public User? GetUserById(int id)
+    public src.TaskManagerBackEnd.UserService? GetUserById(int id)
     {
-        User? user = repository.GetUserById(id);
+        src.TaskManagerBackEnd.UserService? user = repository.GetUserById(id);
         return user;
     }
 
-    public User GetUserByEmail(string email)
+    public src.TaskManagerBackEnd.UserService GetUserByEmail(string email)
     {
         return repository.GetUserByEmail(email);
     }
@@ -88,24 +88,24 @@ public class UserService(
 
     public bool CheckPassword(UserLoginDto userLoginDto)
     {
-        User userAux = GetUserByEmail(userLoginDto.Email);
+        src.TaskManagerBackEnd.UserService userServiceAux = GetUserByEmail(userLoginDto.Email);
 
-        if (userAux is null) throw new Exception("User does not exists");
+        if (userServiceAux is null) throw new Exception("User does not exists");
 
         string passwordUserLoginDto =
-            HashPassword.ComputeHash(userLoginDto.Password, userAux.Salt, _pepper!, Iteration);
+            HashPassword.ComputeHash(userLoginDto.Password, userServiceAux.Salt, _pepper!, Iteration);
 
-        return passwordUserLoginDto.Equals(userAux.Password);
+        return passwordUserLoginDto.Equals(userServiceAux.Password);
     }
 
-    public List<User> GetUserByTeamId(int idTeam)
+    public List<src.TaskManagerBackEnd.UserService> GetUserByTeamId(int idTeam)
     {
         return repository.GetUserByTeamId(idTeam);
     }
 
-    public List<User> GetUsers(bool includeTeam = false)
+    public List<src.TaskManagerBackEnd.UserService> GetUsers(bool includeTeam = false)
     {
-        List<User> users = repository.GetUsers();
+        List<src.TaskManagerBackEnd.UserService> users = repository.GetUsers();
         return users;
     }
 
@@ -121,10 +121,10 @@ public class UserService(
         string salt = HashPassword.GenerateSalt();
         string password = HashPassword.ComputeHash(userDto.Password, salt, _pepper, Iteration);
 
-        User user = userDto.MapToModel();
-        user.Salt = salt;
-        user.Password = password;
+        src.TaskManagerBackEnd.UserService userService = userDto.MapToModel();
+        userService.Salt = salt;
+        userService.Password = password;
 
-        return repository.AddMember(user);
+        return repository.AddMember(userService);
     }
 }

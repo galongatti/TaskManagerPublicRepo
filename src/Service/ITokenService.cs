@@ -8,5 +8,5 @@ public interface ITokenService
     
     string GenerateToken(string email);
     string? ValidateToken(string token);
-    ClaimsIdentity GenerateClaimsIdentity(User? user);  
+    ClaimsIdentity GenerateClaimsIdentity(src.TaskManagerBackEnd.UserService? user);  
 }

@@ -94,7 +94,7 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
     /// <summary>
     /// Endpoint to get team by id
     /// </summary>
-    /// <param name="idTeam"></param>
+    /// <param name="idTeam">Id of the team to be delete</param>
     /// <returns></returns>
     [HttpDelete("{idTeam}")]
     [CustomAuthorize]
@@ -111,5 +111,35 @@ public class TeamController(ILogger<TeamController> logger, ITeamService teamSer
             return BadRequest("Something went wrong");
         }
     }
+    
+    /// <summary>
+    /// Endpoint to search the Team by ID.
+    /// </summary>
+    /// <param name="idTeam">Id of the team to be searched</param>
+    /// <returns>
+    /// Retorna HTTP 200 com os detalhes do time correspondente ao ID fornecido.
+    /// Retorna HTTP 400 se ocorrer um erro ou se o ID for inválido.
+    /// </returns>
+    [HttpGet("{idTeam}")]
+    [CustomAuthorize]
+    public ActionResult<TeamDto> GetTeamById(int idTeam)
+    {
+        try
+        {
+            Team? team = teamService.GetTeamById(idTeam);
+
+            if (team is null) return BadRequest("Team not found");
+
+            TeamDto teamDto = team.MapToGetDto();
+            return Ok(teamDto);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return BadRequest("Something went wrong");
+        }
+    }
+    
+    
     
 }
